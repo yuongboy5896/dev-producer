@@ -1,0 +1,16 @@
+{
+  "app_name": "qianfengmall",
+  "app_mode": "debug",
+  "app_host": "localhost",
+  "app_port": "8090",
+  "database": {
+   "driver": "mysql",
+   "user": "root",
+   "password": "1qaz@WSX",
+   "host": "192.168.2.63",
+   "port": "3306",
+   "db_name": "dev-producer",
+   "charset": "utf8",
+   "show_sql": true
+  }
+}
