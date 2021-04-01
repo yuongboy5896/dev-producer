@@ -32,4 +32,6 @@ func main() {
 //路由设置
 func registerRouter(router *gin.Engine) {
 	new(Controller.HelloController).Router(router)
+	new(Controller.K8sController).Router(router)
+	new(Controller.ClusterController).Router(router)
 }
