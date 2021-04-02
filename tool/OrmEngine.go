@@ -22,7 +22,8 @@ func OrmEngine(cfg *Config) (*Orm, error) {
 		return nil, err
 	}
 	engine.ShowSQL(database.ShowSql)
-	err = engine.Sync2(new(model.SmsCode), new(model.ClusterInfo))
+	err = engine.Sync2(new(model.SmsCode),
+		new(model.ClusterInfo), new(model.Member))
 	if err != nil {
 		return nil, err
 	}

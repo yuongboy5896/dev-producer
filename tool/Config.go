@@ -12,7 +12,8 @@ type Config struct {
 	AppHost string `json:"app_host"`
 	AppPort string `json:"app_port"`
 
-	Database DatabaseConfig `json:"database"`
+	Database    DatabaseConfig `json:"database"`
+	RedisConfig RedisConfig    `json:"redis_config"`
 }
 
 type DatabaseConfig struct {
@@ -24,6 +25,14 @@ type DatabaseConfig struct {
 	DbName   string `json:"db_name"`
 	Charset  string `json:"charset"`
 	ShowSql  bool   `json:"show_sql"`
+}
+
+//Redis属性定义
+type RedisConfig struct {
+	Addr     string `json:"addr"`
+	Port     string `json:"port"`
+	Password string `json:"password"`
+	Db       int    `json:"db"`
 }
 
 var _cfg *Config = nil

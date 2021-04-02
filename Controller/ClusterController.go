@@ -16,7 +16,7 @@ func (clusterController *ClusterController) Router(engine *gin.Engine) {
 }
 
 //http://localhost:8090/api/importcluster
-func (k8sController *ClusterController) ImportCluster(context *gin.Context) {
+func (clusterController *ClusterController) ImportCluster(context *gin.Context) {
 
 	//1、解析集群信息传递参数
 	var importCluster model.ClusterInfo
@@ -29,3 +29,5 @@ func (k8sController *ClusterController) ImportCluster(context *gin.Context) {
 	clusterInfoservice.Import(&importCluster)
 	tool.Success(context, "发送成功"+importCluster.Clustercode)
 }
+
+//http://localhost:8090/api/uploadconfig

@@ -9,3 +9,15 @@ type ClusterInfo struct {
 	Clusterconfig  string `xorm:"varchar(50)" json:"Clusterconfig"`
 	Create_time    int64  `xorm:"bigint" json:"create_time"`
 }
+
+
+
+
+
+
+
+
+
+
+
+
