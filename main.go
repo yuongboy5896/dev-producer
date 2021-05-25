@@ -59,6 +59,7 @@ func registerRouter(router *gin.Engine) {
 	new(Controller.HelloController).Router(router)
 	new(Controller.K8sController).Router(router)
 	new(Controller.ClusterController).Router(router)
+	new(Controller.VirtualMachineControl).Router(router)
 }
 
 //跨域访问：cross  origin resource share

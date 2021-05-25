@@ -1,6 +1,6 @@
 package model
 
-//会员数据结构体定义
+//员工数据结构体定义
 type Member struct {
 	Id           int64   `xorm:"pk autoincr" json:"id"`
 	UserName     string  `xorm:"varchar(20)" json:"user_name"`
@@ -10,6 +10,7 @@ type Member struct {
 	Avatar       string  `xorm:"varchar(255)" json:"avatar"`
 	Balance      float64 `xorm:"double" json:"balance"`
 	IsActive     int8    `xorm:"tinyint" json:"is_active"`
-	City         string  `xorm:"varchar(10)" json:"city"`
-	Test         string  `xorm:"varchar(100)" json:"test"`
+	BU           string  `xorm:"varchar(10)" json:"BU"`
+
+	
 }
