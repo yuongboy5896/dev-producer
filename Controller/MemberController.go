@@ -5,6 +5,7 @@ import (
 	"dev-producer/service"
 	"dev-producer/tool"
 	"encoding/json"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
@@ -41,7 +42,7 @@ func (mc *MemberConntroller) nameLogin(context *gin.Context) {
 	if member.Id != 0 {
 		//用户信息保存到session
 		sess, _ := json.Marshal(member)
-		err = tool.SetSess(context, "user_"+string(member.Id), sess)
+		err = tool.SetSess(context, "user_"+fmt.Sprintf("%d", member.Id), sess)
 		if err != nil {
 			tool.Failed(context, "登录失败")
 			return

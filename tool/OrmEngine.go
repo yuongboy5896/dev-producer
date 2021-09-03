@@ -5,6 +5,7 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/xorm"
+	"xorm.io/core"
 )
 
 var DbEngine *Orm
@@ -21,10 +22,13 @@ func OrmEngine(cfg *Config) (*Orm, error) {
 	if err != nil {
 		return nil, err
 	}
+	engine.SetMapper(core.SameMapper{})
 	engine.ShowSQL(database.ShowSql)
 	err = engine.Sync2(new(model.SmsCode),
 		new(model.ClusterInfo), new(model.Member),
-		new(model.ProjectInfo), new(model.VirtualMachine))
+		new(model.ProjectInfo), new(model.VirtualMachine),
+		new(model.ModuleInfo),
+		new(model.DeployEnv))
 	if err != nil {
 		return nil, err
 	}

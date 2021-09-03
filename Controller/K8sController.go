@@ -33,6 +33,6 @@ func (k8sController *K8sController) GetDeploy(context *gin.Context) {
 		tool.Success(context, "发送成功"+deploy+"/t"+namespace)
 		return
 	}
-	return
+	
 
 }
