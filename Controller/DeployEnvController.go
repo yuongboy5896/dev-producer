@@ -11,41 +11,41 @@ import (
 type DeployEnvController struct {
 }
 
-func (moduleInfo *DeployEnvController) Router(engine *gin.Engine) {
+func (deployEnv *DeployEnvController) Router(engine *gin.Engine) {
 
 	//添加DeployEnv
-	engine.POST("/api/addde", moduleInfo.addde)
-	//获取moduleInfo
-	engine.GET("/api/getdelist", moduleInfo.getdelist)
-	//删除moduleInfo
-	engine.POST("/api/deletede", moduleInfo.deletede)
-	//更新moduleInfo
-	engine.POST("/api/updatede", moduleInfo.updatede)
+	engine.POST("/api/addde", deployEnv.addde)
+	//获取deployEnv
+	engine.GET("/api/getdelist", deployEnv.getdelist)
+	//删除deployEnv
+	engine.POST("/api/deletede", deployEnv.deletede)
+	//更新deployEnv
+	engine.POST("/api/updatede", deployEnv.updatede)
 
 }
 
 func (mi *DeployEnvController) addde(context *gin.Context) {
 
 	//调用service添加 服务模块
-	moduleInfoService := &service.DeployEnvService{}
+	deployEnvService := &service.DeployEnvService{}
 
 	//1、解析 服务信息 传递参数
-	var moduleInfo model.DeployEnv
+	var deployEnv model.DeployEnv
 	println(context.Request.Body)
-	err := tool.Decode(context.Request.Body, &moduleInfo)
+	err := tool.Decode(context.Request.Body, &deployEnv)
 	if err != nil {
 		tool.Failed(context, "参数解析失败")
 		return
 	}
 	//2.查询是否存在此服务发防止多次提交
-	resultmi := moduleInfoService.GetDeployEnv(moduleInfo)
+	resultmi := deployEnvService.GetDeployEnv(deployEnv)
 	if resultmi.EnvIP != "" {
 		tool.Failed(context, "已存在服务模块")
 		return
 	}
 
 	//调用service添加服务
-	result := moduleInfoService.AddDeployEnv(moduleInfo)
+	result := deployEnvService.AddDeployEnv(deployEnv)
 	if 0 == result {
 		tool.Failed(context, "添加失败")
 	}
@@ -55,30 +55,30 @@ func (mi *DeployEnvController) addde(context *gin.Context) {
 
 func (mi *DeployEnvController) getdelist(context *gin.Context) {
 	//调用service功能获取服务器列表
-	moduleInfoService := &service.DeployEnvService{}
-	moduleInfos, err := moduleInfoService.DeployEnvs()
+	deployEnvService := &service.DeployEnvService{}
+	deployEnvs, err := deployEnvService.DeployEnvs()
 	if err != nil {
 		tool.Failed(context, "取服务器列表数据获取失败")
 		return
 	}
-	tool.Success(context, moduleInfos)
+	tool.Success(context, deployEnvs)
 }
 
 func (mi *DeployEnvController) deletede(context *gin.Context) {
 
 	//调用service添加服务
-	moduleInfoService := &service.DeployEnvService{}
+	deployEnvService := &service.DeployEnvService{}
 
 	//1、解析 服务信息 传递参数
-	var moduleInfo model.DeployEnv
+	var deployEnv model.DeployEnv
 	println(context.Request.Body)
-	err := tool.Decode(context.Request.Body, &moduleInfo)
+	err := tool.Decode(context.Request.Body, &deployEnv)
 	if err != nil {
 		tool.Failed(context, "参数解析失败")
 		return
 	}
 	//删除操作
-	result := moduleInfoService.DeleteDeployEnv(moduleInfo)
+	result := deployEnvService.DeleteDeployEnv(deployEnv)
 	if result == 0 {
 		tool.Failed(context, result)
 		return
@@ -88,18 +88,18 @@ func (mi *DeployEnvController) deletede(context *gin.Context) {
 func (mi *DeployEnvController) updatede(context *gin.Context) {
 
 	//调用service添加服务
-	moduleInfoService := &service.DeployEnvService{}
+	deployEnvService := &service.DeployEnvService{}
 
 	//1、解析 服务信息 传递参数
-	var moduleInfo model.DeployEnv
+	var deployEnv model.DeployEnv
 	println(context.Request.Body)
-	err := tool.Decode(context.Request.Body, &moduleInfo)
+	err := tool.Decode(context.Request.Body, &deployEnv)
 	if err != nil {
 		tool.Failed(context, "参数解析失败")
 		return
 	}
 	//更新数据
-	result := moduleInfoService.UpdateDeployEnv(moduleInfo)
+	result := deployEnvService.UpdateDeployEnv(deployEnv)
 	if result == 0 {
 		tool.Failed(context, "更新失败")
 		return

@@ -27,7 +27,8 @@ func OrmEngine(cfg *Config) (*Orm, error) {
 	err = engine.Sync2(new(model.SmsCode),
 		new(model.ClusterInfo), new(model.Member),
 		new(model.ProjectInfo), new(model.VirtualMachine),
-		new(model.ModuleInfo),
+		new(model.ModuleInfo), new(model.PipeLine),
+		new(model.PipeLineHistory), new(model.PipeLineSimple),
 		new(model.DeployEnv))
 	if err != nil {
 		return nil, err

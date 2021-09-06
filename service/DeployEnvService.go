@@ -20,11 +20,11 @@ func (mis *DeployEnvService) DeployEnvs() ([]model.DeployEnv, error) {
 /*
 * 添加服务程序
  */
-func (mis *DeployEnvService) AddDeployEnv(moduleInfo model.DeployEnv) int64 {
+func (mis *DeployEnvService) AddDeployEnv(deployEnv model.DeployEnv) int64 {
 
 	vmD := dao.NewDeployEnvDao()
 
-	result := vmD.InsertDeployEnv(moduleInfo)
+	result := vmD.InsertDeployEnv(deployEnv)
 
 	return result
 }
@@ -32,11 +32,11 @@ func (mis *DeployEnvService) AddDeployEnv(moduleInfo model.DeployEnv) int64 {
 /*
 * 查询服务程序
  */
-func (mis *DeployEnvService) GetDeployEnv(moduleInfo model.DeployEnv) model.DeployEnv {
+func (mis *DeployEnvService) GetDeployEnv(deployEnv model.DeployEnv) model.DeployEnv {
 
 	vmD := dao.NewDeployEnvDao()
 
-	result := vmD.QueryByDeployEnvs(moduleInfo)
+	result := vmD.QueryByDeployEnvs(deployEnv)
 
 	return result
 }
@@ -44,11 +44,11 @@ func (mis *DeployEnvService) GetDeployEnv(moduleInfo model.DeployEnv) model.Depl
 /*
 * 删除服务程序
  */
-func (mis *DeployEnvService) DeleteDeployEnv(moduleInfo model.DeployEnv) int64 {
+func (mis *DeployEnvService) DeleteDeployEnv(deployEnv model.DeployEnv) int64 {
 
 	vmD := dao.NewDeployEnvDao()
 
-	result := vmD.DeleteDeployEnv(moduleInfo)
+	result := vmD.DeleteDeployEnv(deployEnv)
 
 	return result
 }
@@ -56,11 +56,11 @@ func (mis *DeployEnvService) DeleteDeployEnv(moduleInfo model.DeployEnv) int64 {
 /*
 * 更新服务程序
  */
-func (mis *DeployEnvService) UpdateDeployEnv(moduleInfo model.DeployEnv) int64 {
+func (mis *DeployEnvService) UpdateDeployEnv(deployEnv model.DeployEnv) int64 {
 
 	vmD := dao.NewDeployEnvDao()
 
-	result := vmD.UpdateDeployEnv(moduleInfo)
+	result := vmD.UpdateDeployEnv(deployEnv)
 
 	return result
 }
