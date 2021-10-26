@@ -40,6 +40,7 @@ type ModuleInfo struct {
 	TechnologyType string `xorm:"varchar(50)" json:"TechnologyType"` //模块的技术类型 node java go C++
 	SshUrlToRepo   string `xorm:"varchar(200)" json:"SshUrlToRepo"`
 	HttpUrlToRepo  string `xorm:"varchar(200)" json:"HttpUrlToRepo"`
+	ProjectType    string `xorm:"varchar(50)" json:"ProjectType"` //项目列表 镜像仓库用 web 微服务 物联网等分类
 }
 
 type DeployEnv struct {

@@ -11,7 +11,7 @@ import (
 //初始化session操作
 func InitSession(engine *gin.Engine) {
 	config := GetConfig().RedisConfig
-	store, err := redis.NewStore(10, "tcp", config.Addr+":"+config.Port, "", []byte("secret"))
+	store, err := redis.NewStore(10, "tcp", config.Addr+":"+config.Port, config.Password, []byte("secret"))
 	if err != nil {
 		fmt.Println(err.Error())
 	}
