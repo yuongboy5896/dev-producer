@@ -150,9 +150,16 @@ func (mc *MemberController) addUser(context *gin.Context) {
 		tool.Failed(context, "参数解析失败")
 		return
 	}
-
-	//完成手机+验证码登录
+	// 2.查看用户名是否存在
 	us := service.MemberService{}
+	user := us.ExistsUser(addUserParam.Name)
+
+	if user != nil {
+		tool.Failed(context, "用户已存在")
+		return
+	}
+
+	//3 添加用户信息
 	member := us.AddUser(addUserParam)
 
 	if member != nil {

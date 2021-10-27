@@ -27,7 +27,7 @@ func (md *MemberDao) Query(name string, password string) *model.Member {
 
 	password = tool.EncoderSha256(password)
 
-	_, err := md.Where(" user_name = ? and password = ? ", name, password).Get(&member)
+	_, err := md.Where(" UserName = ? and password = ? ", name, password).Get(&member)
 	if err != nil {
 		println(err.Error())
 		return nil
@@ -49,6 +49,15 @@ func (md *MemberDao) ValidateSmsCode(phone string, code string) *model.SmsCode {
 func (md *MemberDao) QueryByPhone(phone string) *model.Member {
 	var member model.Member
 	if _, err := md.Where(" mobile  = ? ", phone).Get(&member); err != nil {
+		fmt.Println(err.Error())
+	}
+	return &member
+}
+
+//
+func (md *MemberDao) QueryByName(userName string) *model.Member {
+	var member model.Member
+	if _, err := md.Where(" Username = ? ", userName).Get(&member); err != nil {
 		fmt.Println(err.Error())
 	}
 	return &member

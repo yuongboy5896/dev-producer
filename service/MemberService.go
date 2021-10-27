@@ -38,9 +38,9 @@ func (ms *MemberService) Login(name string, password string) *model.Member {
 	return &user
 }
 
-//用户手机号+验证码的登录
+// 插入用户信息
 func (ms *MemberService) AddUser(addUserParam param.AddUserParam) *model.Member {
-	//1、使用用户名 + 密码 查询用户信息 如果存在用户 直接返回
+	// 插入用户信息
 	md := dao.MemberDao{tool.DbEngine}
 
 	user := model.Member{}
@@ -52,6 +52,17 @@ func (ms *MemberService) AddUser(addUserParam param.AddUserParam) *model.Member 
 
 	user.Id = md.InsertMember(user)
 	return &user
+}
+
+// 查看用户名是否存在
+func (ms *MemberService) ExistsUser(userName string) *model.Member {
+	// 插入用户信息
+	md := dao.MemberDao{tool.DbEngine}
+	member := md.QueryByName(userName)
+	if member.Id != 0 {
+		return member
+	}
+	return member
 }
 
 //用户手机号+验证码的登录
