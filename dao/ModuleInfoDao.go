@@ -24,7 +24,7 @@ func (mid *ModuleInfoDao) QueryModuleInfos() ([]model.ModuleInfo, error) {
 	return virtualmachines, nil
 }
 
-//新虚拟机的数据库插入操作
+//新应用模块的数据库插入操作
 func (mid *ModuleInfoDao) InsertModuleInfo(virtualMachine model.ModuleInfo) int64 {
 	result, err := mid.InsertOne(&virtualMachine)
 	if err != nil {
@@ -34,16 +34,16 @@ func (mid *ModuleInfoDao) InsertModuleInfo(virtualMachine model.ModuleInfo) int6
 	return result
 }
 
-//查询虚拟机是否存在
+//查询应用模块是否存在
 func (mid *ModuleInfoDao) QueryByModuleInfos(mi model.ModuleInfo) model.ModuleInfo {
-	var virtualMachine model.ModuleInfo
-	if _, err := mid.Where(" ModuleCode  = ? ", mi.ModuleCode).Get(&virtualMachine); err != nil {
+	var moduleInfo model.ModuleInfo
+	if _, err := mid.Where(" ModuleCode  = ? ", mi.ModuleCode).Get(&moduleInfo); err != nil {
 		fmt.Println(err.Error())
 	}
-	return virtualMachine
+	return moduleInfo
 }
 
-//删除虚拟机
+//删除应用模块
 func (mid *ModuleInfoDao) DeleteModuleInfo(mi model.ModuleInfo) int64 {
 
 	if _, err := mid.Where("  ModuleCode  = ? ", mi.ModuleCode).Delete(mi); err != nil {
@@ -53,7 +53,7 @@ func (mid *ModuleInfoDao) DeleteModuleInfo(mi model.ModuleInfo) int64 {
 	return 1
 }
 
-//更新虚拟机
+//更新应用模块
 func (mid *ModuleInfoDao) UpdateModuleInfo(mi model.ModuleInfo) int64 {
 
 	if result, err := mid.Where("  ModuleCode  = ? ", mi.ModuleCode).Update(mi); err != nil {

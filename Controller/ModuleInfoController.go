@@ -20,9 +20,11 @@ func (moduleInfo *ModuleInfoController) Router(engine *gin.Engine) {
 	//获取moduleInfo
 	engine.GET("/api/getmilist", moduleInfo.getmilist)
 	//删除moduleInfo
-	engine.POST("/api/deletemi", moduleInfo.deletemi)
-	//更新moduleInfo
-	engine.POST("/api/updatemi", moduleInfo.updatemi)
+	engine.DELETE("/api/deletemi/:id", moduleInfo.deletemi)
+	// 更新moduleInfo
+	engine.PUT("/api/updatemi/:id", moduleInfo.updatemi)
+	// 获取ModuleInfo
+	engine.GET("/api/getmi/:id", moduleInfo.getmi)
 
 }
 
@@ -47,7 +49,7 @@ func (mi *ModuleInfoController) addmi(context *gin.Context) {
 	}
 	//设置gitlabid
 	gitlabService := &service.GitlabService{}
-	// 缺少获取gitlab 页数接口
+	// 缺少获取gitlab 页数接口  需要优化
 	for j := 1; j < 20; j++ {
 		page := fmt.Sprintf("%d", j)
 		gitlabProjects, err := gitlabService.GitlabProject(page)
@@ -99,11 +101,7 @@ func (mi *ModuleInfoController) deletemi(context *gin.Context) {
 	//1、解析 服务信息 传递参数
 	var moduleInfo model.ModuleInfo
 	println(context.Request.Body)
-	err := tool.Decode(context.Request.Body, &moduleInfo)
-	if err != nil {
-		tool.Failed(context, "参数解析失败")
-		return
-	}
+	moduleInfo.ModuleCode = context.Param("id")
 	//删除操作
 	result := moduleInfoService.DeleteModuleInfo(moduleInfo)
 	if result == 0 {
@@ -132,4 +130,18 @@ func (mi *ModuleInfoController) updatemi(context *gin.Context) {
 		return
 	}
 	tool.Success(context, result)
+}
+func (mi *ModuleInfoController) getmi(context *gin.Context) {
+	//调用service添加服务
+	moduleInfoService := &service.ModuleInfoService{}
+
+	//1、解析 服务信息 传递参数
+	var moduleInfo model.ModuleInfo
+	moduleInfo.ModuleCode = context.Param("id")
+	moduleInfo = moduleInfoService.GetModuleInfo(moduleInfo)
+	if moduleInfo.ModuleName == "" {
+		tool.Failed(context, "获取模块信息失败")
+		return
+	}
+	tool.Success(context, moduleInfo)
 }

@@ -33,7 +33,7 @@ type PipeLineHistory struct {
 
 type ModuleInfo struct {
 	Id             int64  `xorm:"pk autoincr" json:"Id"`             //自增iD
-	ModuleCode     string `xorm:"varchar(50)" json:"ModuleCode"`     //模块的英文
+	ModuleCode     string `xorm:"varchar(50)" json:"ModuleCode"`     //模块的英文 唯一编码
 	ModuleName     string `xorm:"varchar(50)" json:"ModuleName"`     //模块的名称
 	GitlabUrl      string `xorm:"varchar(200)" json:"GitlabUrl"`     //模块的gitlab url
 	GitlabId       int64  `xorm:"varchar(200)" json:"GitlabId"`      //模块的gitlab id
