@@ -18,9 +18,11 @@ func (deployEnv *DeployEnvController) Router(engine *gin.Engine) {
 	//获取deployEnv
 	engine.GET("/api/getdelist", deployEnv.getdelist)
 	//删除deployEnv
-	engine.POST("/api/deletede", deployEnv.deletede)
+	engine.DELETE("/api/deletede/:IP", deployEnv.deletede)
 	//更新deployEnv
 	engine.POST("/api/updatede", deployEnv.updatede)
+	//获取信息deployEnv
+	engine.GET("/api/getde/:IP", deployEnv.getde)
 
 }
 
@@ -68,15 +70,10 @@ func (mi *DeployEnvController) deletede(context *gin.Context) {
 
 	//调用service添加服务
 	deployEnvService := &service.DeployEnvService{}
-
-	//1、解析 服务信息 传递参数
+	//1、解析 环境信息 传递参数
 	var deployEnv model.DeployEnv
-	println(context.Request.Body)
-	err := tool.Decode(context.Request.Body, &deployEnv)
-	if err != nil {
-		tool.Failed(context, "参数解析失败")
-		return
-	}
+	deployEnv.EnvIP = context.Param("IP")
+
 	//删除操作
 	result := deployEnvService.DeleteDeployEnv(deployEnv)
 	if result == 0 {
@@ -105,4 +102,22 @@ func (mi *DeployEnvController) updatede(context *gin.Context) {
 		return
 	}
 	tool.Success(context, result)
+}
+
+func (mi *DeployEnvController) getde(context *gin.Context) {
+
+	//调用service添加服务
+	deployEnvService := &service.DeployEnvService{}
+
+	//1、解析 环境信息 传递参数
+	var deployEnv model.DeployEnv
+	deployEnv.EnvIP = context.Param("IP")
+
+	//2. 获取信息
+	deployEnv = deployEnvService.GetDeployEnv(deployEnv)
+	if deployEnv.EnvConnPort == "" {
+		tool.Failed(context, "获取模块信息失败")
+		return
+	}
+	tool.Success(context, deployEnv)
 }

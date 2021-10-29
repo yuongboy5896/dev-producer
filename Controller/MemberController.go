@@ -34,9 +34,9 @@ func (mc *MemberController) Router(engine *gin.Engine) {
 }
 
 //头像上传
-func (mc *MemberController) uploadAvator(context *gin.Context) {
-
-}
+//func (mc *MemberController) uploadAvator(context *gin.Context) {
+//	return
+//}
 
 func (mc *MemberController) nameLogin(context *gin.Context) {
 

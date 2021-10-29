@@ -46,8 +46,9 @@ type ModuleInfo struct {
 type DeployEnv struct {
 	Id          int64  `xorm:"pk autoincr" json:"Id"`
 	EnvName     string `xorm:"varchar(50)" json:"EnvName"`     //环境名称
-	EnvIP       string `xorm:"varchar(50)" json:"EnvIP"`       //环境api ,或者通过ssh 跳板机
-	EnvType     string `xorm:"varchar(50)" json:"EnvType"`     //测试环境 生产环境
+	EnvIP       string `xorm:"varchar(50)" json:"EnvIP"`       //环境IP ,或者通过ssh 跳板机
+	EnvType     string `xorm:"varchar(50)" json:"EnvType"`     // 环境类型 测试环境 生产环境
 	EnvConn     string `xorm:"varchar(50)" json:"EnvConn"`     //连接方式 api ssh
 	EnvConnPort string `xorm:"varchar(50)" json:"EnvConnPort"` //连接方式 端口
+	Desc        string `xorm:"varchar(200)" json:"Desc"`       //描述
 }
