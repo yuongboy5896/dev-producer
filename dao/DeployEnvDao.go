@@ -37,7 +37,7 @@ func (ded *DeployEnvDao) InsertDeployEnv(virtualMachine model.DeployEnv) int64 {
 //查询虚拟机是否存在
 func (ded *DeployEnvDao) QueryByDeployEnvs(de model.DeployEnv) model.DeployEnv {
 	var virtualMachine model.DeployEnv
-	if _, err := ded.Where(" EnvIP  = ? ", de.EnvIP).Get(&virtualMachine); err != nil {
+	if _, err := ded.Where(" Id  = ? ", de.Id).Get(&virtualMachine); err != nil {
 		fmt.Println(err.Error())
 	}
 	return virtualMachine
@@ -46,7 +46,7 @@ func (ded *DeployEnvDao) QueryByDeployEnvs(de model.DeployEnv) model.DeployEnv {
 //删除虚拟机
 func (ded *DeployEnvDao) DeleteDeployEnv(de model.DeployEnv) int64 {
 
-	if _, err := ded.Where(" EnvIP  = ? ", de.EnvIP).Delete(de); err != nil {
+	if _, err := ded.Where(" Id  = ? ", de.Id).Delete(de); err != nil {
 		fmt.Println(err.Error())
 		return 0
 	}
@@ -56,7 +56,7 @@ func (ded *DeployEnvDao) DeleteDeployEnv(de model.DeployEnv) int64 {
 //更新虚拟机
 func (ded *DeployEnvDao) UpdateDeployEnv(de model.DeployEnv) int64 {
 
-	if result, err := ded.Where(" EnvIP  = ? ", de.EnvIP).Update(de); err != nil {
+	if result, err := ded.Where(" Id  = ? ", de.Id).Update(de); err != nil {
 		fmt.Println(err.Error(), result)
 		return 0
 	}

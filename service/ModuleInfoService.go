@@ -42,6 +42,18 @@ func (mis *ModuleInfoService) GetModuleInfo(moduleInfo model.ModuleInfo) model.M
 }
 
 /*
+* 查询服务程序根据
+ */
+func (mis *ModuleInfoService) GetModuleInfoById(moduleInfo model.ModuleInfo) model.ModuleInfo {
+
+	vmD := dao.NewModuleInfoDao()
+
+	result := vmD.QueryByIdModuleInfos(moduleInfo)
+
+	return result
+}
+
+/*
 * 删除服务程序
  */
 func (mis *ModuleInfoService) DeleteModuleInfo(moduleInfo model.ModuleInfo) int64 {

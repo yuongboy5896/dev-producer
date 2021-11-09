@@ -4,6 +4,7 @@ import (
 	"dev-producer/model"
 	"dev-producer/service"
 	"dev-producer/tool"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -18,11 +19,11 @@ func (deployEnv *DeployEnvController) Router(engine *gin.Engine) {
 	//获取deployEnv
 	engine.GET("/api/getdelist", deployEnv.getdelist)
 	//删除deployEnv
-	engine.DELETE("/api/deletede/:IP", deployEnv.deletede)
+	engine.DELETE("/api/deletede/:Id", deployEnv.deletede)
 	//更新deployEnv
-	engine.POST("/api/updatede", deployEnv.updatede)
+	engine.PUT("/api/updatede/:Id", deployEnv.updatede)
 	//获取信息deployEnv
-	engine.GET("/api/getde/:IP", deployEnv.getde)
+	engine.GET("/api/getde/:Id", deployEnv.getde)
 
 }
 
@@ -72,7 +73,13 @@ func (mi *DeployEnvController) deletede(context *gin.Context) {
 	deployEnvService := &service.DeployEnvService{}
 	//1、解析 环境信息 传递参数
 	var deployEnv model.DeployEnv
-	deployEnv.EnvIP = context.Param("IP")
+	Id := context.Param("Id")
+	Id64, err := strconv.ParseInt(Id, 10, 64)
+	if err != nil {
+		tool.Failed(context, "参数解析失败")
+		return
+	}
+	deployEnv.Id = Id64
 
 	//删除操作
 	result := deployEnvService.DeleteDeployEnv(deployEnv)
@@ -111,8 +118,14 @@ func (mi *DeployEnvController) getde(context *gin.Context) {
 
 	//1、解析 环境信息 传递参数
 	var deployEnv model.DeployEnv
-	deployEnv.EnvIP = context.Param("IP")
 
+	Id := context.Param("Id")
+	Id64, err := strconv.ParseInt(Id, 10, 64)
+	if err != nil {
+		tool.Failed(context, "参数解析失败")
+		return
+	}
+	deployEnv.Id = Id64
 	//2. 获取信息
 	deployEnv = deployEnvService.GetDeployEnv(deployEnv)
 	if deployEnv.EnvConnPort == "" {

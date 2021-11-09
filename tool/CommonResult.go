@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	SUCCESS int = 0 //操作成功
-	FAILED  int = 1 //操作失败
+	SUCCESS int = 200 //操作成功
+	FAILED  int = 404 //操作失败
 )
 
 //普通成功返回

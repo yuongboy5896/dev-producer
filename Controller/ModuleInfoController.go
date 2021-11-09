@@ -5,6 +5,7 @@ import (
 	"dev-producer/service"
 	"dev-producer/tool"
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -20,11 +21,11 @@ func (moduleInfo *ModuleInfoController) Router(engine *gin.Engine) {
 	//获取moduleInfo
 	engine.GET("/api/getmilist", moduleInfo.getmilist)
 	//删除moduleInfo
-	engine.DELETE("/api/deletemi/:id", moduleInfo.deletemi)
+	engine.DELETE("/api/deletemi/:Id", moduleInfo.deletemi)
 	// 更新moduleInfo
-	engine.PUT("/api/updatemi/:id", moduleInfo.updatemi)
+	engine.PUT("/api/updatemi/:Id", moduleInfo.updatemi)
 	// 获取ModuleInfo
-	engine.GET("/api/getmi/:id", moduleInfo.getmi)
+	engine.GET("/api/getmi/:Id", moduleInfo.getmi)
 
 }
 
@@ -67,7 +68,9 @@ func (mi *ModuleInfoController) addmi(context *gin.Context) {
 			if find := strings.Contains(gitlabProjects[i].Web_url, lasturl); find {
 				moduleInfo.HttpUrlToRepo = gitlabProjects[i].Http_url_to_repo
 				moduleInfo.SshUrlToRepo = gitlabProjects[i].Ssh_url_to_repo
-				moduleInfo.GitlabId = gitlabProjects[i].Id
+				//moduleInfo.GitlabId = gitlabProjects[i].Id
+				str := fmt.Sprintf("%d", gitlabProjects[i].Id)
+				moduleInfo.GitlabId = str
 				break
 			}
 		}
@@ -101,7 +104,14 @@ func (mi *ModuleInfoController) deletemi(context *gin.Context) {
 	//1、解析 服务信息 传递参数
 	var moduleInfo model.ModuleInfo
 	println(context.Request.Body)
-	moduleInfo.ModuleCode = context.Param("id")
+	Id := context.Param("Id")
+	Id64, err := strconv.ParseInt(Id, 10, 64)
+	if err != nil {
+		tool.Failed(context, "参数解析失败")
+		return
+	}
+	moduleInfo.Id = Id64
+
 	//删除操作
 	result := moduleInfoService.DeleteModuleInfo(moduleInfo)
 	if result == 0 {
@@ -123,6 +133,14 @@ func (mi *ModuleInfoController) updatemi(context *gin.Context) {
 		tool.Failed(context, "参数解析失败")
 		return
 	}
+	Id := context.Param("Id")
+	Id64, err := strconv.ParseInt(Id, 10, 64)
+	if err != nil {
+		tool.Failed(context, "参数解析失败")
+		return
+	}
+	moduleInfo.Id = Id64
+
 	//更新数据
 	result := moduleInfoService.UpdateModuleInfo(moduleInfo)
 	if result == 0 {
@@ -137,8 +155,15 @@ func (mi *ModuleInfoController) getmi(context *gin.Context) {
 
 	//1、解析 服务信息 传递参数
 	var moduleInfo model.ModuleInfo
-	moduleInfo.ModuleCode = context.Param("id")
-	moduleInfo = moduleInfoService.GetModuleInfo(moduleInfo)
+
+	Id := context.Param("Id")
+	Id64, err := strconv.ParseInt(Id, 10, 64)
+	if err != nil {
+		tool.Failed(context, "参数解析失败")
+		return
+	}
+	moduleInfo.Id = Id64
+	moduleInfo = moduleInfoService.GetModuleInfoById(moduleInfo)
 	if moduleInfo.ModuleName == "" {
 		tool.Failed(context, "获取模块信息失败")
 		return

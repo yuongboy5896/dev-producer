@@ -15,13 +15,14 @@ func (Gitlab *GitlabController) Router(engine *gin.Engine) {
 	//添加GitlabProjects
 	engine.GET("/api/getgplist", Gitlab.getgplist)
 	//获取分支信息按gitlabprojectiD
-	engine.GET("/api/getgrlist", Gitlab.getgrlist)
+	engine.GET("/api/getgrlist/:Id", Gitlab.getgrlist)
 
 }
 
 func (gc *GitlabController) getgplist(context *gin.Context) {
 
 	page := context.Query("page")
+
 	if page == "" {
 		page = "1"
 	}
@@ -36,7 +37,8 @@ func (gc *GitlabController) getgplist(context *gin.Context) {
 }
 func (gc *GitlabController) getgrlist(context *gin.Context) {
 
-	gitProID := context.Query("gitlabproid")
+	//gitProID := context.Query("gitlabproid")
+	gitProID := context.Param("Id")
 	if gitProID == "" {
 		tool.Failed(context, "未获取导参数")
 		return

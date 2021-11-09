@@ -43,10 +43,21 @@ func (mid *ModuleInfoDao) QueryByModuleInfos(mi model.ModuleInfo) model.ModuleIn
 	return moduleInfo
 }
 
+//查询应用模块是否存在
+func (mid *ModuleInfoDao) QueryByIdModuleInfos(mi model.ModuleInfo) model.ModuleInfo {
+	var moduleInfo model.ModuleInfo
+	if _, err := mid.Where(" Id  = ? ", mi.Id).Get(&moduleInfo); err != nil {
+		fmt.Println(err.Error())
+	}
+	return moduleInfo
+}
+
+
+
 //删除应用模块
 func (mid *ModuleInfoDao) DeleteModuleInfo(mi model.ModuleInfo) int64 {
 
-	if _, err := mid.Where("  ModuleCode  = ? ", mi.ModuleCode).Delete(mi); err != nil {
+	if _, err := mid.Where("  Id  = ? ", mi.Id).Delete(mi); err != nil {
 		fmt.Println(err.Error())
 		return 0
 	}
@@ -56,7 +67,7 @@ func (mid *ModuleInfoDao) DeleteModuleInfo(mi model.ModuleInfo) int64 {
 //更新应用模块
 func (mid *ModuleInfoDao) UpdateModuleInfo(mi model.ModuleInfo) int64 {
 
-	if result, err := mid.Where("  ModuleCode  = ? ", mi.ModuleCode).Update(mi); err != nil {
+	if result, err := mid.Where("  Id  = ? ", mi.Id).Update(mi); err != nil {
 		fmt.Println(err.Error(), result)
 		return 0
 	}

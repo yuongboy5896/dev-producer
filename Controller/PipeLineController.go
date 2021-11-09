@@ -23,7 +23,7 @@ func (pipeline *PipeLineController) Router(engine *gin.Engine) {
 }
 
 func (pipeline *PipeLineController) addpl(context *gin.Context) {
-	//调用service添加虚拟机
+	//调用service添加流水线
 	pipeLineService := &service.PipeLineService{}
 
 	//1、解析 pipeline信息 传递参数
@@ -34,14 +34,14 @@ func (pipeline *PipeLineController) addpl(context *gin.Context) {
 		tool.Failed(context, "参数解析失败")
 		return
 	}
-	//2.查询是否存在此虚拟机发防止多次提交
+	//2.查询是否存在此流水线发防止多次提交
 	resultpl := pipeLineService.GetPipeLine(pipeLine)
 	if resultpl.Pipename != "" {
 		tool.Failed(context, "已存在Pipeline")
 		return
 	}
 
-	//调用service添加虚拟机
+	//调用service添加流水线
 	result := pipeLineService.AddPipeLine(pipeLine)
 	if 0 == result {
 		tool.Failed(context, "添加失败")
@@ -60,7 +60,7 @@ func (pipeline *PipeLineController) getpllist(context *gin.Context) {
 }
 
 func (pipeline *PipeLineController) deletepl(context *gin.Context) {
-	//调用service添加虚拟机
+	//调用service添加流水线
 	pipeLineService := &service.PipeLineService{}
 
 	//1、解析 pipeline信息 传递参数
@@ -81,7 +81,7 @@ func (pipeline *PipeLineController) deletepl(context *gin.Context) {
 }
 
 func (pipeline *PipeLineController) updatepl(context *gin.Context) {
-	//调用service添加虚拟机
+	//调用service添加流水线
 	pipeLineService := &service.PipeLineService{}
 
 	//1、解析 pipeline信息 传递参数
