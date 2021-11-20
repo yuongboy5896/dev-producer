@@ -24,6 +24,16 @@ func (pld *PipeLineDao) QueryPipeLines() ([]model.PipeLine, error) {
 	return pipeLine, nil
 }
 
+//从数据库中查询所有服务器列表
+func (pld *PipeLineDao) QueryPipeLinesByID() ([]model.PipeLine, error) {
+	var pipeLine []model.PipeLine
+	if _, err := pld.Where(" Id  = ? ", ).Find(&pipeLine); err != nil {
+	//if err := pld.Engine.Find(&pipeLine); err != nil {
+		return nil, err
+	}
+	return pipeLine, nil
+}
+
 //新虚拟机的数据库插入操作
 func (pld *PipeLineDao) InsertPipeLine(virtualMachine model.PipeLine) int64 {
 	result, err := pld.InsertOne(&virtualMachine)

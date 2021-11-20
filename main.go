@@ -66,6 +66,7 @@ func registerRouter(router *gin.Engine) {
 	new(Controller.PipeLineController).Router(router)
 	new(Controller.PipeLineSimpleController).Router(router)
 	new(Controller.MemberController).Router(router)
+	new(Controller.WebHookController).Router(router)
 }
 
 //跨域访问：cross  origin resource share

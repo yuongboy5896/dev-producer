@@ -17,6 +17,16 @@ func (mis *PipeLineService) PipeLines() ([]model.PipeLine, error) {
 	return pipeLine.QueryPipeLines()
 }
 
+/**
+ * 获取获取 pipeline
+ * 根据模块Id
+ */
+func (mis *PipeLineService) PipeLinesById(Id int64) ([]model.PipeLine, error) {
+	//数据库操作层
+	pipeLine := dao.NewPipeLineDao()
+	return pipeLine.QueryPipeLines()
+}
+
 /*
 * 添加pipeline
  */

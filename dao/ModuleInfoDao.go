@@ -22,7 +22,7 @@ func (mid *ModuleInfoDao) QueryModuleInfos() ([]model.ModuleInfo, error) {
 		return nil, err
 	}
 	return virtualmachines, nil
-}
+}  
 
 //新应用模块的数据库插入操作
 func (mid *ModuleInfoDao) InsertModuleInfo(virtualMachine model.ModuleInfo) int64 {

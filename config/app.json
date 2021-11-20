@@ -1,7 +1,7 @@
 {
   "app_name": "Thpower-Dev",
   "app_mode": "debug",
-  "app_host": "localhost",
+  "app_host": "192.168.1.76",
   "app_port": "8090",
   "database": {
    "driver": "mysql",

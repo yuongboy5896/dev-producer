@@ -131,7 +131,7 @@ func (mc *MemberController) smsLogin(context *gin.Context) {
 
 	if member != nil {
 		sess, _ := json.Marshal(member)
-		err = tool.SetSess(context, "user_"+string(member.Id), sess)
+		err = tool.SetSess(context, "user_"+ string(member.Id), sess)
 		if err != nil {
 			tool.Failed(context, "登录失败")
 		}
@@ -164,7 +164,7 @@ func (mc *MemberController) addUser(context *gin.Context) {
 
 	if member != nil {
 		sess, _ := json.Marshal(member)
-		err = tool.SetSess(context, "user_"+string(member.Id), sess)
+		err = tool.SetSess(context, "user_"+ string(member.Id), sess)
 		if err != nil {
 			tool.Failed(context, "注册失败")
 		}

@@ -16,6 +16,8 @@ func (pipeline *PipeLineController) Router(engine *gin.Engine) {
 	engine.POST("/api/addpl", pipeline.addpl)
 	//获取pipeline
 	engine.GET("/api/getpllist", pipeline.getpllist)
+	//获取pipeline
+	engine.GET("/api/getpllistbyid", pipeline.getpllistbyid)
 	//删除pipeline
 	engine.POST("/api/deletepl", pipeline.deletepl)
 	//更新pipeline
@@ -50,6 +52,15 @@ func (pipeline *PipeLineController) addpl(context *gin.Context) {
 }
 
 func (pipeline *PipeLineController) getpllist(context *gin.Context) {
+	pipeLineService := &service.PipeLineService{}
+	pipeLines, err := pipeLineService.PipeLines()
+	if err != nil {
+		tool.Failed(context, "取服务器列表数据获取失败")
+		return
+	}
+	tool.Success(context, pipeLines)
+}
+func (pipeline *PipeLineController) getpllistbyid(context *gin.Context) {
 	pipeLineService := &service.PipeLineService{}
 	pipeLines, err := pipeLineService.PipeLines()
 	if err != nil {
