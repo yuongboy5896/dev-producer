@@ -24,7 +24,7 @@ func (mis *PipeLineService) PipeLines() ([]model.PipeLine, error) {
 func (mis *PipeLineService) PipeLinesById(Id int64) ([]model.PipeLine, error) {
 	//数据库操作层
 	pipeLine := dao.NewPipeLineDao()
-	return pipeLine.QueryPipeLines()
+	return pipeLine.QueryPipeLinesByID(Id)
 }
 
 /*

@@ -4,6 +4,7 @@ import (
 	"dev-producer/model"
 	"dev-producer/service"
 	"dev-producer/tool"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,8 +17,8 @@ func (pipeline *PipeLineController) Router(engine *gin.Engine) {
 	engine.POST("/api/addpl", pipeline.addpl)
 	//获取pipeline
 	engine.GET("/api/getpllist", pipeline.getpllist)
-	//获取pipeline
-	engine.GET("/api/getpllistbyid", pipeline.getpllistbyid)
+	// 根据gitlabeId获取pipeline
+	engine.GET("/api/getpllistbyid/:GitlabId", pipeline.getpllistbyid)
 	//删除pipeline
 	engine.POST("/api/deletepl", pipeline.deletepl)
 	//更新pipeline
@@ -61,8 +62,11 @@ func (pipeline *PipeLineController) getpllist(context *gin.Context) {
 	tool.Success(context, pipeLines)
 }
 func (pipeline *PipeLineController) getpllistbyid(context *gin.Context) {
+
+	Id := context.Param("GitlabId")
+	Id64, err := strconv.ParseInt(Id, 10, 64)
 	pipeLineService := &service.PipeLineService{}
-	pipeLines, err := pipeLineService.PipeLines()
+	pipeLines, err := pipeLineService.PipeLinesById(Id64)
 	if err != nil {
 		tool.Failed(context, "取服务器列表数据获取失败")
 		return

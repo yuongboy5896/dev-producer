@@ -25,10 +25,9 @@ func (pld *PipeLineDao) QueryPipeLines() ([]model.PipeLine, error) {
 }
 
 //从数据库中查询所有服务器列表
-func (pld *PipeLineDao) QueryPipeLinesByID() ([]model.PipeLine, error) {
+func (pld *PipeLineDao) QueryPipeLinesByID(GitlabId int64) ([]model.PipeLine, error) {
 	var pipeLine []model.PipeLine
-	if _, err := pld.Where(" Id  = ? ").Get(&pipeLine); err != nil {
-		//if err := pld.Engine.Find(&pipeLine); err != nil {
+	if _, err := pld.Where(" GitlabId  = ? ", GitlabId).Get(&pipeLine); err != nil {
 		return nil, err
 	}
 	return pipeLine, nil
