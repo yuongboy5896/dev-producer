@@ -1,5 +1,6 @@
 package model
 
+//
 type PipeLine struct {
 	Id             int64  `xorm:"pk autoincr" json:"Id"`
 	Pipename       string `xorm:"varchar(50)" json:"PipeName"`       //发布流程
@@ -13,7 +14,9 @@ type PipeLine struct {
 	ModuleName     string `xorm:"varchar(50)" json:"ModuleName"`     //模块的名字
 	ModuleCode     string `xorm:"varchar(50)" json:"ModuleCode"`     //模块的编码
 	Department     string `xorm:"varchar(50)" json:"Department"`     //模块的名字
-	ShowUrl        string `xorm:"varchar(50)" json:"ShowUrl"`
+	ShowUrl        string `xorm:"varchar(50)" json:"ShowUrl"`        //
+	ModuleId       int64  `xorm:"bigint" json:"ModuleId"`            // 模块Id
+	EnvId          int64  `xorm:"bigint" json:"EnvId"`               // 环境Id
 }
 
 type PipeLineSimple struct {
