@@ -128,7 +128,7 @@ func (mi *DeployEnvController) getde(context *gin.Context) {
 	deployEnv.Id = Id64
 	//2. 获取信息
 	deployEnv = deployEnvService.GetDeployEnv(deployEnv)
-	if deployEnv.EnvConnPort == "" {
+	if deployEnv.EnvIP == "" {
 		tool.Failed(context, "获取模块信息失败")
 		return
 	}

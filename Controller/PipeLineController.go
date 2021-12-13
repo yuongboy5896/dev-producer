@@ -18,11 +18,15 @@ func (pipeline *PipeLineController) Router(engine *gin.Engine) {
 	//获取pipeline
 	engine.GET("/api/getpllist", pipeline.getpllist)
 	// 根据gitlabeId获取pipeline
-	engine.GET("/api/getpllistbyid/:GitlabId", pipeline.getpllistbyid)
-	//删除pipeline
-	engine.POST("/api/deletepl", pipeline.deletepl)
-	//更新pipeline
+	engine.GET("/api/getpllistbygitlabid/:GitlabId", pipeline.getpllistbygitlabid)
+	// 根据gitlabeId获取pipeline
+	engine.GET("/api/getpllistbyid/:Id", pipeline.getpllistbyid)
+	// 删除pipeline
+	engine.DELETE("/api/deletepl/:Id", pipeline.deletepl)
+	// 更新pipeline
 	engine.POST("/api/updatepl", pipeline.updatepl)
+	// 发布pipeline
+	engine.PUT("/api/publishplbyid/:Id", pipeline.publishplByid)
 }
 
 func (pipeline *PipeLineController) addpl(context *gin.Context) {
@@ -56,6 +60,18 @@ func (pipeline *PipeLineController) getpllist(context *gin.Context) {
 	pipeLineService := &service.PipeLineService{}
 	pipeLines, err := pipeLineService.PipeLines()
 	if err != nil {
+		tool.Failed(context, "取pipeline列表数据获取失败")
+		return
+	}
+	tool.Success(context, pipeLines)
+}
+func (pipeline *PipeLineController) getpllistbygitlabid(context *gin.Context) {
+
+	Id := context.Param("GitlabId")
+	Id64, err := strconv.ParseInt(Id, 10, 64)
+	pipeLineService := &service.PipeLineService{}
+	pipeLines, err := pipeLineService.PipeLinesByGitLabId(Id64)
+	if err != nil {
 		tool.Failed(context, "取服务器列表数据获取失败")
 		return
 	}
@@ -63,15 +79,15 @@ func (pipeline *PipeLineController) getpllist(context *gin.Context) {
 }
 func (pipeline *PipeLineController) getpllistbyid(context *gin.Context) {
 
-	Id := context.Param("GitlabId")
+	Id := context.Param("Id")
 	Id64, err := strconv.ParseInt(Id, 10, 64)
 	pipeLineService := &service.PipeLineService{}
-	pipeLines, err := pipeLineService.PipeLinesById(Id64)
+	pipeLine, err := pipeLineService.PipeLinesById(Id64)
 	if err != nil {
-		tool.Failed(context, "取服务器列表数据获取失败")
+		tool.Failed(context, "取pipeline列表数据获取失败")
 		return
 	}
-	tool.Success(context, pipeLines)
+	tool.Success(context, pipeLine)
 }
 
 func (pipeline *PipeLineController) deletepl(context *gin.Context) {
@@ -80,12 +96,13 @@ func (pipeline *PipeLineController) deletepl(context *gin.Context) {
 
 	//1、解析 pipeline信息 传递参数
 	var pipeLine model.PipeLine
-	println(context.Request.Body)
-	err := tool.Decode(context.Request.Body, &pipeLine)
+	Id := context.Param("Id")
+	Id64, err := strconv.ParseInt(Id, 10, 64)
 	if err != nil {
 		tool.Failed(context, "参数解析失败")
 		return
 	}
+	pipeLine.Id = Id64
 	//删除操作
 	result := pipeLineService.DeletePipeLine(pipeLine)
 	if result == 0 {
@@ -114,4 +131,23 @@ func (pipeline *PipeLineController) updatepl(context *gin.Context) {
 		return
 	}
 	tool.Success(context, result)
+}
+
+func (pipeline *PipeLineController) publishplByid(context *gin.Context) {
+
+	Id := context.Param("Id")
+	Id64, err := strconv.ParseInt(Id, 10, 64)
+	pipeLineService := &service.PipeLineService{}
+	pipeLine, err := pipeLineService.PipeLinesById(Id64)
+	if err != nil {
+		tool.Failed(context, "取pipeline列表数据获取失败")
+		return
+	}
+
+	// 镜像库地址 未实现
+
+
+	pipeLineService.PublishPipeLine(pipeLine)
+
+	tool.Success(context, pipeLine)
 }

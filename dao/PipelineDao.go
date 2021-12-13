@@ -24,11 +24,20 @@ func (pld *PipeLineDao) QueryPipeLines() ([]model.PipeLine, error) {
 	return pipeLine, nil
 }
 
-//从数据库中查询所有服务器列表
-func (pld *PipeLineDao) QueryPipeLinesByID(GitlabId int64) ([]model.PipeLine, error) {
+// 从数据库中查询所有服务器列表
+func (pld *PipeLineDao) QueryPipeLinesByGitlabeID(GitlabId int64) ([]model.PipeLine, error) {
 	var pipeLine []model.PipeLine
-	if err := pld.Where(" GitlabId  = ? ", GitlabId).Find(&pipeLine); err != nil {
+	if err := pld.Where("GitlabId  = ? ", GitlabId).Find(&pipeLine); err != nil {
 		return nil, err
+	}
+	return pipeLine, nil
+}
+
+// 从数据库中查询所有服务器列表
+func (pld *PipeLineDao) QueryPipeLinesByID(GitlabId int64) (model.PipeLine, error) {
+	var pipeLine model.PipeLine
+	if _, err := pld.Where(" Id  = ? ", GitlabId).Get(&pipeLine); err != nil {
+		fmt.Println(err.Error())
 	}
 	return pipeLine, nil
 }
@@ -43,10 +52,10 @@ func (pld *PipeLineDao) InsertPipeLine(virtualMachine model.PipeLine) int64 {
 	return result
 }
 
-//查询虚拟机是否存在
+//查询分支是否存在
 func (pld *PipeLineDao) QueryByPipeLines(pl model.PipeLine) model.PipeLine {
 	var virtualMachine model.PipeLine
-	if _, err := pld.Where(" Pipename  = ? ", pl.Pipename).Get(&virtualMachine); err != nil {
+	if _, err := pld.Where(" Branch  = ? ", pl.Branch).Get(&virtualMachine); err != nil {
 		fmt.Println(err.Error())
 	}
 	return virtualMachine
@@ -55,7 +64,7 @@ func (pld *PipeLineDao) QueryByPipeLines(pl model.PipeLine) model.PipeLine {
 //删除虚拟机
 func (pld *PipeLineDao) DeletePipeLine(pl model.PipeLine) int64 {
 
-	if _, err := pld.Where("  Pipename  = ? ", pl.Pipename).Delete(pl); err != nil {
+	if _, err := pld.Where("  Id  = ? ", pl.Id).Delete(pl); err != nil {
 		fmt.Println(err.Error())
 		return 0
 	}
