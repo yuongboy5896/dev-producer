@@ -1,5 +1,5 @@
 package model
-
+/*
 type ImageRegistry struct {
 	Id               int64  `xorm:"pk autoincr" json:"Id"`
 	Login            string `xorm:"varchar(50)" json:"Login"`             //登录命名
@@ -8,3 +8,4 @@ type ImageRegistry struct {
 	RegistryLocalUrl string `xorm:"varchar(200)" json:"RegistryLocalUrl"` //镜像仓库地址
 	NameSpace        string `xorm:"varchar(50)" json:"NameSpace"`         //镜像项目 
 }
+*/
