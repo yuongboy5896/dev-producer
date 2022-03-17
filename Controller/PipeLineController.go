@@ -47,6 +47,12 @@ func (pipeline *PipeLineController) addpl(context *gin.Context) {
 		tool.Failed(context, "已存在Pipeline")
 		return
 	}
+	//3  创建相对于的jenkins流水线
+	jenkins := &service.JenkinsService{}
+	
+	//模版管理未实现
+	jenkins.CreateJobFromTmp("","");
+
 
 	//调用service添加流水线
 	result := pipeLineService.AddPipeLine(pipeLine)

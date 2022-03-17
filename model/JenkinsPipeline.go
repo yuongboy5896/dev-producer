@@ -58,3 +58,10 @@ type DeployEnv struct {
 	EnvConnPort string `xorm:"varchar(50)" json:"EnvConnPort"` //连接方式 端口
 	Desc        string `xorm:"varchar(200)" json:"Desc"`       //描述
 }
+
+type JobTemplate struct {
+	Id      int64  `xorm:"pk autoincr" json:"Id"`
+	JobName string `xorm:"varchar(50)" json:"JobName"`  //流水线名称
+	JobCode string `xorm:"varchar(50)" json:"JobCode"`  //流水线编码
+	JobFile string `xorm:"varchar(100)" json:"JobFile"` //流水线模版文件  未实现。。。
+}

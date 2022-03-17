@@ -17,7 +17,7 @@ type GitlabService struct {
  */
 func (gls *GitlabService) GitlabProject(page string) ([]model.GitlabProject, error) {
 	//通过http 请求
-	resp, err := http.Get("http://192.168.48.15:8080/api/v4/projects?access_token=DMGNmCyUTav5ertmrnxx&page=" + page)
+	resp, err := http.Get("https://git.thpyun.com/api/v4/projects?access_token=1nqcj74S22wx8C-TsNC-&page=" + page)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -47,7 +47,7 @@ func (gls *GitlabService) GitlabProject(page string) ([]model.GitlabProject, err
  */
 func (gls *GitlabService) GitlabBranch(projectId string) ([]model.GitlabBranch, error) {
 	//通过http 请求
-	resp, err := http.Get("http://192.168.48.15:8080/api/v4/projects/" + projectId + "/repository/branches?access_token=DMGNmCyUTav5ertmrnxx")
+	resp, err := http.Get("https://git.thpyun.com/api/v4/projects/" + projectId + "/repository/branches?access_token=1nqcj74S22wx8C-TsNC-")
 	if err != nil {
 		fmt.Println(err)
 	}
