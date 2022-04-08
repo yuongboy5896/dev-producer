@@ -54,14 +54,28 @@ func (vm *VirtualMachineControl) addVm(context *gin.Context) {
 }
 
 func (vm *VirtualMachineControl) getvmlist(context *gin.Context) {
-	//调用service功能获取服务器列表
-	virtualMachineService := &service.VirtualMachineService{}
-	virtualMachines, err := virtualMachineService.VirtualMachines()
-	if err != nil {
-		tool.Failed(context, "取服务器列表数据获取失败")
+	//
+	vCenterService := &service.VcenterService{}
+	SessionId, errSess := vCenterService.GetSession()
+	if errSess != nil {
+		tool.Failed(context, "获取vcenter session 失败")
 		return
 	}
-	tool.Success(context, virtualMachines)
+	Vmlist, err := vCenterService.GetVmlist(SessionId)
+	if err != nil {
+		tool.Failed(context, "获取vcenter服务器列表失败")
+		return
+	}
+	println(Vmlist)
+
+	//调用service功能获取服务器列表  组合信息
+	//virtualMachineService := &service.VirtualMachineService{}
+	//virtualMachines, err := virtualMachineService.VirtualMachines()
+	//if err != nil {
+	//	tool.Failed(context, "取服务器列表数据获取失败")
+	//	return
+	//}
+	tool.Success(context, Vmlist)
 }
 
 func (vm *VirtualMachineControl) deletevm(context *gin.Context) {

@@ -12,6 +12,7 @@ type VirtualMachineService struct {
  * 获取获取虚拟机列表
  */
 func (fcs *VirtualMachineService) VirtualMachines() ([]model.VirtualMachine, error) {
+
 	//数据库操作层
 	virtualmachineDao := dao.NewVirtualMachineDao()
 	return virtualmachineDao.QueryVirtualMachines()
