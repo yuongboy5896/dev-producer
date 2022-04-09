@@ -6,15 +6,15 @@
   "database": {
    "driver": "mysql",
    "user": "root",
-   "password": "1qaz@WSX",
-   "host": "192.168.2.63",
+   "password": "123456",
+   "host": "192.168.42.129",
    "port": "3306",
    "db_name": "dev-producer",
    "charset": "utf8",
    "show_sql": true
   }, 
   "redis_config": {
-    "addr": "192.168.2.60",
+    "addr": "192.168.42.129",
     "port": "6379",
     "password": "root1234",
     "db": 1
