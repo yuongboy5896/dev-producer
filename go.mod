@@ -11,5 +11,6 @@ require (
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/go-xorm/xorm v0.7.9
 	github.com/mojocn/base64Captcha v1.2.2
+	github.com/vmware/govmomi v0.27.4 // indirect
 	xorm.io/core v0.7.2-0.20190928055935-90aeac8d08eb
 )

@@ -16,12 +16,11 @@ func NewVirtualMachineDao() *VirtualMachineDao {
 }
 
 //从数据库中查询所有服务器列表
-func (vmd *VirtualMachineDao) QueryVirtualMachines() ([]model.VirtualMachine, error) {
-	
-	var virtualmachines []model.VirtualMachine
-	if err := vmd.Engine.Find(&virtualmachines); err != nil {
-		return nil, err
-	}
+func (vmd *VirtualMachineDao) QueryVirtualMachines() ([]model.VirtualMachineInfo, error) {
+
+	///
+	virtualmachines := make([]model.VirtualMachineInfo, 0)
+	vmd.Engine.Sql("select * from VcenterVm LEFT  JOIN VirtualMachine ON  VcenterVm.Vm = VirtualMachine.VmID").Find(&virtualmachines)
 	return virtualmachines, nil
 }
 

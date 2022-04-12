@@ -29,7 +29,8 @@ func OrmEngine(cfg *Config) (*Orm, error) {
 		new(model.ProjectInfo), new(model.VirtualMachine),
 		new(model.ModuleInfo), new(model.PipeLine),
 		new(model.PipeLineHistory), new(model.PipeLineSimple),
-		new(model.DeployEnv))
+		new(model.DeployEnv), new(model.DeployEnv),
+		new(model.VcenterVm))
 	if err != nil {
 		return nil, err
 	}

@@ -54,28 +54,37 @@ func (vm *VirtualMachineControl) addVm(context *gin.Context) {
 }
 
 func (vm *VirtualMachineControl) getvmlist(context *gin.Context) {
-	//
+	//未优化
 	vCenterService := &service.VcenterService{}
 	SessionId, errSess := vCenterService.GetSession()
 	if errSess != nil {
 		tool.Failed(context, "获取vcenter session 失败")
 		return
 	}
-	Vmlist, err := vCenterService.GetVmlist(SessionId)
+	err := vCenterService.GetVmlist(SessionId, "POWERED_ON")
 	if err != nil {
-		tool.Failed(context, "获取vcenter服务器列表失败")
+		tool.Failed(context, "获取vcenter服务器ON列表失败")
 		return
 	}
-	println(Vmlist)
+	SessinId, erSess := vCenterService.GetSession()
+	if erSess != nil {
+		tool.Failed(context, "获取vcenter session 失败")
+		return
+	}
+	erroff := vCenterService.GetVmlist(SessinId, "POWERED_OFF")
+	if erroff != nil {
+		tool.Failed(context, "获取vcenter服务器OFF列表失败")
+		return
+	}
 
 	//调用service功能获取服务器列表  组合信息
-	//virtualMachineService := &service.VirtualMachineService{}
-	//virtualMachines, err := virtualMachineService.VirtualMachines()
-	//if err != nil {
-	//	tool.Failed(context, "取服务器列表数据获取失败")
-	//	return
-	//}
-	tool.Success(context, Vmlist)
+	virtualMachineService := &service.VirtualMachineService{}
+	virtualMachines, err := virtualMachineService.VirtualMachines()
+	if err != nil {
+		tool.Failed(context, "取服务器列表数据获取失败")
+		return
+	}
+	tool.Success(context, virtualMachines)
 }
 
 func (vm *VirtualMachineControl) deletevm(context *gin.Context) {

@@ -3,7 +3,9 @@ package service
 import (
 	"bytes"
 	"crypto/tls"
+	"dev-producer/dao"
 	"dev-producer/model"
+	"dev-producer/tool"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -62,7 +64,7 @@ func (Vcs *VcenterService) GetSession() (string, error) {
 * 获取vCenter vwm列表
  */
 
-func (Vcs *VcenterService) GetVmlist(SessionID string) ([]model.VcenterVm, error) {
+func (Vcs *VcenterService) GetVmlist(SessionID string, states string) error {
 	//跳过证书认证
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
@@ -71,15 +73,15 @@ func (Vcs *VcenterService) GetVmlist(SessionID string) ([]model.VcenterVm, error
 		Timeout:   time.Second * 10,
 		Transport: tr,
 	}
-	url := "https://192.168.49.252/rest/vcenter/vm?filter.power_states=POWERED_ON"
+	url := "https://192.168.49.252/rest/vcenter/vm?filter.power_states=" + states
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	req.Header.Add("vmware-api-session-id", SessionID)
 	response, err := client.Do(req)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	defer response.Body.Close()
 	if response.StatusCode == 200 {
@@ -88,15 +90,25 @@ func (Vcs *VcenterService) GetVmlist(SessionID string) ([]model.VcenterVm, error
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		fmt.Println(err)
-		return nil, err
+		return err
 	}
 	var vcenterVmlist model.VcenterVmValue
 	reader := bytes.NewReader(body)
 	decoder := json.NewDecoder(reader)
 	if err := decoder.Decode(&vcenterVmlist); err != nil {
 		fmt.Println(err)
-		return nil, err
+		return err
 	}
-	return vcenterVmlist.Value, nil
+	Vcs.AddVm(vcenterVmlist.Value)
+	return nil
 
+}
+
+func (Vcs *VcenterService) AddVm(Vmlist []model.VcenterVm) int64 {
+	vcD := dao.VcenterDao{tool.DbEngine}
+	result := vcD.InsertVms(Vmlist)
+	if result != 0 {
+
+	}
+	return result
 }
