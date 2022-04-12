@@ -86,9 +86,15 @@ func (mi *ModuleInfoController) addmi(context *gin.Context) {
 }
 
 func (mi *ModuleInfoController) getmilist(context *gin.Context) {
+	// 解析分页
+	daoPage, err := tool.PaseUrl(context)
+	if err != nil {
+		tool.Failed(context, "取服务器列表数据获取失败")
+		return
+	}
 	//调用service功能获取服务器列表
 	moduleInfoService := &service.ModuleInfoService{}
-	moduleInfos, err := moduleInfoService.ModuleInfos()
+	moduleInfos, err := moduleInfoService.ModuleInfos(&daoPage)
 	if err != nil {
 		tool.Failed(context, "取服务器列表数据获取失败")
 		return

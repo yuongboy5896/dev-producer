@@ -20,9 +20,9 @@ type VcenterVmValue struct {
 }
 
 type VcenterVm struct {
-	Mem         int64  `json:"memory_size_MiB"` //虚拟机内存Mib
 	Vm          string `json:"vm"`              //虚拟机ID
 	Name        string `json:"name"`            //虚拟机名称
+	Mem         int64  `json:"memory_size_MiB"` //虚拟机内存Mib
 	Power_state string `json:"power_state"`     //服务器开机状态
 	Cpu         int64  `json:"cpu_count"`       //虚拟机cpu核数
 

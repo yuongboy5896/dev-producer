@@ -16,13 +16,13 @@ func NewModuleInfoDao() *ModuleInfoDao {
 }
 
 //从数据库中查询所有服务器列表
-func (mid *ModuleInfoDao) QueryModuleInfos() ([]model.ModuleInfo, error) {
+func (mid *ModuleInfoDao) QueryModuleInfos(daoPage *model.DaoPage) ([]model.ModuleInfo, error) {
 	var virtualmachines []model.ModuleInfo
-	if err := mid.Engine.Find(&virtualmachines); err != nil {
+	if err := mid.Engine.Where("").Limit(daoPage.Pagenum, daoPage.Pagesize).Find(&virtualmachines); err != nil {
 		return nil, err
 	}
 	return virtualmachines, nil
-}  
+}
 
 //新应用模块的数据库插入操作
 func (mid *ModuleInfoDao) InsertModuleInfo(virtualMachine model.ModuleInfo) int64 {
@@ -51,8 +51,6 @@ func (mid *ModuleInfoDao) QueryByIdModuleInfos(mi model.ModuleInfo) model.Module
 	}
 	return moduleInfo
 }
-
-
 
 //删除应用模块
 func (mid *ModuleInfoDao) DeleteModuleInfo(mi model.ModuleInfo) int64 {

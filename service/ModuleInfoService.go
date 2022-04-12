@@ -11,10 +11,10 @@ type ModuleInfoService struct {
 /**
  * 获取获取 服务程序
  */
-func (mis *ModuleInfoService) ModuleInfos() ([]model.ModuleInfo, error) {
+func (mis *ModuleInfoService) ModuleInfos(daoPage *model.DaoPage) ([]model.ModuleInfo, error) {
 	//数据库操作层
 	virtualmachineDao := dao.NewModuleInfoDao()
-	return virtualmachineDao.QueryModuleInfos()
+	return virtualmachineDao.QueryModuleInfos(daoPage)
 }
 
 /*
