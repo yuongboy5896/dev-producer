@@ -11,7 +11,9 @@ type VcenterDao struct {
 }
 
 func (Vc *VcenterDao) InsertVms(Vmlist []model.VcenterVm) int64 {
-	result, err := Vc.InsertWithIGNORE(Vmlist)
+	//不支持官方不支持 IGORE 方法，已修改xorm。xorm已停止更新，后期换gorm
+	//result, err := Vc.InsertWithIGNORE(Vmlist)
+	result, err := Vc.Insert(Vmlist)
 	if err != nil {
 		fmt.Println(err.Error())
 		return 0

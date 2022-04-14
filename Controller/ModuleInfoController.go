@@ -50,7 +50,6 @@ func (mi *ModuleInfoController) addmi(context *gin.Context) {
 	}
 	//设置gitlabid
 	gitlabService := &service.GitlabService{}
-	// 缺少获取gitlab 页数接口  需要优化
 	for j := 1; j < 20; j++ {
 		page := fmt.Sprintf("%d", j)
 		gitlabProjects, err := gitlabService.GitlabProject(page)
