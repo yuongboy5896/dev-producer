@@ -30,7 +30,8 @@ func OrmEngine(cfg *Config) (*Orm, error) {
 		new(model.ModuleInfo), new(model.PipeLine),
 		new(model.PipeLineHistory), new(model.PipeLineSimple),
 		new(model.DeployEnv), new(model.DeployEnv),
-		new(model.VcenterVm))
+		new(model.VcenterVm),
+		new(model.ModuleForImageUrl))
 	if err != nil {
 		return nil, err
 	}

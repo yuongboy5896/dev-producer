@@ -34,7 +34,7 @@ func (Vcs *VcenterService) GetSession() (string, error) {
 		return "", err
 	}
 	username := "administrator@vsphere.local"
-	password := "Gkht@123"
+	password := "Gkht@1234"
 	req.SetBasicAuth(username, password)
 	response, err := client.Do(req)
 	if err != nil {

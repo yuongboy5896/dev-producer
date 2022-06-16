@@ -66,16 +66,16 @@ func (vm *VirtualMachineControl) getvmlist(context *gin.Context) {
 		tool.Failed(context, "获取vcenter服务器ON列表失败")
 		return
 	}
-	SessinId, erSess := vCenterService.GetSession()
-	if erSess != nil {
-		tool.Failed(context, "获取vcenter session 失败")
-		return
-	}
-	erroff := vCenterService.GetVmlist(SessinId, "POWERED_OFF")
-	if erroff != nil {
-		tool.Failed(context, "获取vcenter服务器OFF列表失败")
-		return
-	}
+	//SessinId, erSess := vCenterService.GetSession()
+	//if erSess != nil {
+	//	tool.Failed(context, "获取vcenter session 失败")
+	//	return
+	//}
+	//erroff := vCenterService.GetVmlist(SessinId, "POWERED_OFF")
+	//if erroff != nil {
+	//	tool.Failed(context, "获取vcenter服务器OFF列表失败")
+	//	return
+	//}
 
 	//调用service功能获取服务器列表  组合信息
 	virtualMachineService := &service.VirtualMachineService{}

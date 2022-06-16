@@ -65,3 +65,13 @@ type JobTemplate struct {
 	JobCode string `xorm:"varchar(50)" json:"JobCode"`  //流水线编码
 	JobFile string `xorm:"varchar(100)" json:"JobFile"` //流水线模版文件  未实现。。。
 }
+
+//零时接口
+type ModuleForImageUrl struct {
+	Id         int64  `xorm:"pk autoincr" json:"Id"`
+	ModuleName string `xorm:"varchar(50)" json:"ModuleName"` //模块名称
+	ModuleCode string `xorm:"varchar(50)" json:"ModuleCode"` //模块名称
+	ImageUrl   string `xorm:"varchar(200)" json:"ImageUrl"`  //镜像地址
+	NameSpace  string `xorm:"varchar(50)" json:"NameSpace"`  //命名空间
+	DeployEnv  string `xorm:"varchar(50)" json:"DeployEnv"`  //环境地址
+}
