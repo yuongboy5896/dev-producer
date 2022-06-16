@@ -5,7 +5,7 @@ MAINTAINER lwnmengjing
 ENV GOPROXY https://goproxy.cn/
 
 WORKDIR /go/release
-#RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 RUN apk update && apk add tzdata
 
 COPY go.mod ./go.mod
