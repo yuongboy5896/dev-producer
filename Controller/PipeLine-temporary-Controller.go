@@ -1,17 +1,14 @@
 package Controller
 
-
 import (
 	"dev-producer/model"
 	"dev-producer/service"
 	"dev-producer/tool"
 
-
 	"github.com/gin-gonic/gin"
 )
 
 type PipeTemporayController struct {
-
 }
 
 func (pipetemporay *PipeTemporayController) Router(engine *gin.Engine) {
@@ -19,7 +16,6 @@ func (pipetemporay *PipeTemporayController) Router(engine *gin.Engine) {
 	//添加pipeline
 	engine.POST("/api/addpt", pipetemporay.addpt)
 }
-
 
 func (pipetemporay *PipeTemporayController) addpt(context *gin.Context) {
 	//调用service添加 服务模块
@@ -37,8 +33,11 @@ func (pipetemporay *PipeTemporayController) addpt(context *gin.Context) {
 	resulpfi := PipeTemporayService.GetModuleForImageUrl(ModuleForImageUrl)
 	if resulpfi.ModuleCode != "" {
 		//省略一个接口搞定update 模块信息
-		PipeTemporayService.UpdateModuleInfo(ModuleForImageUrl)
-		tool.Failed(context, "镜像地址更新")
+		result := PipeTemporayService.UpdateModuleInfo(ModuleForImageUrl)
+		if 0 == result {
+			tool.Failed(context, "镜像地址更新失败")
+		}
+		tool.Success(context, "镜像地址更新成功")
 		return
 	}
 	//调用service添加服务

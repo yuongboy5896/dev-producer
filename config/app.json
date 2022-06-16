@@ -1,6 +1,6 @@
 {
   "app_name": "Thpower-Dev",
-  "app_mode": "debug",
+  "app_mode": "release",
   "app_host": "0.0.0.0",
   "app_port": "8090",
   "database": {
@@ -11,7 +11,7 @@
    "port": "3306",
    "db_name": "dev-producer",
    "charset": "utf8",
-   "show_sql": true
+   "show_sql": false
   }, 
   "redis_config": {
     "addr": "192.168.2.61",

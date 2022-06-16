@@ -69,9 +69,9 @@ type JobTemplate struct {
 //零时接口
 type ModuleForImageUrl struct {
 	Id         int64  `xorm:"pk autoincr" json:"Id"`
-	ModuleName string `xorm:"varchar(50)" json:"ModuleName"` //模块名称
-	ModuleCode string `xorm:"varchar(50)" json:"ModuleCode"` //模块名称
-	ImageUrl   string `xorm:"varchar(200)" json:"ImageUrl"`  //镜像地址
-	NameSpace  string `xorm:"varchar(50)" json:"NameSpace"`  //命名空间
-	DeployEnv  string `xorm:"varchar(50)" json:"DeployEnv"`  //环境地址
+	ModuleName string `xorm:"varchar(50) " json:"ModuleName"`         //模块名称
+	ModuleCode string `xorm:"varchar(50) NOT NULL" json:"ModuleCode"` //模块名称
+	ImageUrl   string `xorm:"varchar(300)" json:"ImageUrl"`           //镜像地址
+	NameSpace  string `xorm:"varchar(50)" json:"NameSpace"`           //命名空间
+	DeployEnv  string `xorm:"varchar(50)" json:"DeployEnv"`           //环境地址
 }
