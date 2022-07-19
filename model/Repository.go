@@ -7,3 +7,6 @@ type ImageRegistry struct {
 	RegistryUrl string `xorm:"varchar(200)" json:"RegistryUrl"` //镜像仓库地址
 	NameSpace   string `xorm:"varchar(50)" json:"NameSpace"`    //镜像项目
 }
+
+
+
