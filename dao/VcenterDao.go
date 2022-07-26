@@ -10,6 +10,11 @@ type VcenterDao struct {
 	*tool.Orm
 }
 
+//实例化Dao对象
+func NewVcenterDao() *VcenterDao {
+	return &VcenterDao{tool.DbEngine}
+}
+
 func (Vc *VcenterDao) InsertVms(Vmlist []model.VcenterVm) int64 {
 	//不支持官方不支持 IGORE 方法，已修改xorm。xorm已停止更新，后期换gorm
 	//result, err := Vc.InsertWithIGNORE(Vmlist)

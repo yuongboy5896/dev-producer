@@ -20,7 +20,7 @@ type MemberService struct {
 func (ms *MemberService) Login(name string, password string) *model.Member {
 
 	//1、使用用户名 + 密码 查询用户信息 如果存在用户 直接返回
-	md := dao.MemberDao{tool.DbEngine}
+	md := dao.NewMemberDao()
 	member := md.Query(name, password)
 	if member.Id != 0 {
 		return member
@@ -41,7 +41,7 @@ func (ms *MemberService) Login(name string, password string) *model.Member {
 // 插入用户信息
 func (ms *MemberService) AddUser(addUserParam param.AddUserParam) *model.Member {
 	// 插入用户信息
-	md := dao.MemberDao{tool.DbEngine}
+	md := dao.NewMemberDao()
 
 	user := model.Member{}
 	user.UserName = addUserParam.Name
@@ -57,7 +57,7 @@ func (ms *MemberService) AddUser(addUserParam param.AddUserParam) *model.Member 
 // 查看用户名是否存在
 func (ms *MemberService) ExistsUser(userName string) *model.Member {
 	// 插入用户信息
-	md := dao.MemberDao{tool.DbEngine}
+	md := dao.NewMemberDao()
 	member := md.QueryByName(userName)
 	if member.Id != 0 {
 		return member
@@ -71,7 +71,7 @@ func (ms *MemberService) SmsLogin(loginparam param.SmsLoginParam) *model.Member 
 	//1.获取到手机号和验证码
 
 	//2.验证手机号+验证码是否正确
-	md := dao.MemberDao{tool.DbEngine}
+	md := dao.NewMemberDao()
 	sms := md.ValidateSmsCode(loginparam.Phone, loginparam.Code)
 	if sms.Id == 0 {
 		return nil
@@ -131,7 +131,7 @@ func (ms *MemberService) Sendcode(phone string) bool {
 	if response.Code == "OK" {
 		//将验证码保存到数据库中
 		smsCode := model.SmsCode{Phone: phone, Code: code, BizId: response.BizId, CreateTime: time.Now().Unix()}
-		memberDao := dao.MemberDao{tool.DbEngine}
+		memberDao := dao.NewMemberDao()
 		result := memberDao.InsertCode(smsCode)
 		return result > 0
 	}

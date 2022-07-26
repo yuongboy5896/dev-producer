@@ -5,7 +5,6 @@ import (
 	"crypto/tls"
 	"dev-producer/dao"
 	"dev-producer/model"
-	"dev-producer/tool"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -105,7 +104,7 @@ func (Vcs *VcenterService) GetVmlist(SessionID string, states string) error {
 }
 
 func (Vcs *VcenterService) AddVm(Vmlist []model.VcenterVm) int64 {
-	vcD := dao.VcenterDao{tool.DbEngine}
+	vcD := dao.NewVcenterDao()
 	result := vcD.InsertVms(Vmlist)
 	if result != 0 {
 

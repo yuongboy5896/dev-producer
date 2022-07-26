@@ -10,6 +10,11 @@ type MemberDao struct {
 	*tool.Orm
 }
 
+//实例化Dao对象
+func NewMemberDao() *MemberDao {
+	return &MemberDao{tool.DbEngine}
+}
+
 //更新member记录，头像属性
 func (md *MemberDao) UpdateMemberAvatar(userId int64, fileName string) int64 {
 	member := model.Member{Avatar: fileName}
