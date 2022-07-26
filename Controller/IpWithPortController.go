@@ -15,6 +15,7 @@ type IpWithPortController struct {
 
 func (ipWithPortController *IpWithPortController) Router(engine *gin.Engine) {
 	engine.POST("/api/scanips", ipWithPortController.ScanIPs)
+	engine.POST("/api/scanips", ipWithPortController.ScanIPs)
 	engine.GET("/api/ipalive", ipWithPortController.ScanIPs)
 }
 
@@ -40,7 +41,14 @@ func (ipWithPortController *IpWithPortController) ScanIPs(context *gin.Context) 
 	netWorkService := service.NetWorkService{}
 	iplist := strings.Split(ipalive.Ip, ".")
 	tmp := iplist[0] + "." + iplist[1] + "." + iplist[2] + "."
-	netWorkService.ScanIP(tmp)
+	//端口范围
+
+	IpResult := netWorkService.ScanIP(tmp)
+	if iplist == nil {
+		tool.Failed(context, "未扫描到相关信息")
+		return
+	}
+	tool.Success(context, IpResult)
 
 }
 func (ipWithPortController *IpWithPortController) Ipalive(context *gin.Context) {
