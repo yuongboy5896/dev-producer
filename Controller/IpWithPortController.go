@@ -15,7 +15,6 @@ type IpWithPortController struct {
 
 func (ipWithPortController *IpWithPortController) Router(engine *gin.Engine) {
 	engine.POST("/api/scanips", ipWithPortController.ScanIPs)
-	engine.POST("/api/scanips", ipWithPortController.ScanIPs)
 	engine.GET("/api/ipalive", ipWithPortController.ScanIPs)
 }
 
