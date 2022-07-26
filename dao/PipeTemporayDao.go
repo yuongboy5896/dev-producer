@@ -28,7 +28,7 @@ func (ptd *PipeTemporayDao) InsertModuleForImageUrl(ModuleForImageUrl model.Modu
 //查询模块的镜像仓库地址是否存在
 func (ptd *PipeTemporayDao) QueryByModuleForImageUrls(mfi model.ModuleForImageUrl) model.ModuleForImageUrl {
 	var ModuleForImageUrl model.ModuleForImageUrl
-	if _, err := ptd.Where(" ModuleCode  = ? ", mfi.ModuleCode).Get(&ModuleForImageUrl); err != nil {
+	if _, err := ptd.Where(" ModuleCode  = ? and DeployEnv = ? ", mfi.ModuleCode, mfi.DeployEnv).Get(&ModuleForImageUrl); err != nil {
 		fmt.Println(err.Error())
 	}
 	return ModuleForImageUrl
@@ -37,7 +37,7 @@ func (ptd *PipeTemporayDao) QueryByModuleForImageUrls(mfi model.ModuleForImageUr
 //删除模块的镜像仓库地址
 func (ptd *PipeTemporayDao) DeleteModuleForImageUrl(mfi model.ModuleForImageUrl) int64 {
 
-	if _, err := ptd.Where(" ModuleCode  = ? ", mfi.ModuleCode).Delete(mfi); err != nil {
+	if _, err := ptd.Where(" ModuleCode  = ? and DeployEnv = ? ", mfi.ModuleCode, mfi.DeployEnv).Delete(mfi); err != nil {
 		fmt.Println(err.Error())
 		return 0
 	}
@@ -47,7 +47,7 @@ func (ptd *PipeTemporayDao) DeleteModuleForImageUrl(mfi model.ModuleForImageUrl)
 //更新模块的镜像仓库地址
 func (ptd *PipeTemporayDao) UpdateModuleForImageUrl(mfi model.ModuleForImageUrl) int64 {
 
-	if result, err := ptd.Where(" ModuleCode  = ? ", mfi.ModuleCode).Update(mfi); err != nil {
+	if result, err := ptd.Where(" ModuleCode  = ? and DeployEnv = ? ", mfi.ModuleCode, mfi.DeployEnv).Update(mfi); err != nil {
 		fmt.Println(err.Error(), result)
 		return 0
 	}
