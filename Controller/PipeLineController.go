@@ -49,11 +49,12 @@ func (pipeline *PipeLineController) addpl(context *gin.Context) {
 	}
 	//3  创建相对于的jenkins流水线
 	jenkins := &service.JenkinsService{}
-	
-	//模版管理未实现
-	jenkins.CreateJobFromTmp("","");
 
-
+	//4 模版创建pipeline
+	bcreate := jenkins.CreateJobFromTmp(pipeLine.PipeCode, pipeLine.TechnologyType, pipeLine)
+	if !bcreate {
+		tool.Failed(context, "添加jenkins pipeline 失败")
+	}
 	//调用service添加流水线
 	result := pipeLineService.AddPipeLine(pipeLine)
 	if 0 == result {
@@ -151,7 +152,6 @@ func (pipeline *PipeLineController) publishplByid(context *gin.Context) {
 	}
 
 	// 镜像库地址 未实现
-
 
 	pipeLineService.PublishPipeLine(pipeLine)
 

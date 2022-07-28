@@ -55,7 +55,7 @@ func (pld *PipeLineDao) InsertPipeLine(virtualMachine model.PipeLine) int64 {
 //查询分支是否存在
 func (pld *PipeLineDao) QueryByPipeLines(pl model.PipeLine) model.PipeLine {
 	var virtualMachine model.PipeLine
-	if _, err := pld.Where(" Branch  = ? ", pl.Branch).Get(&virtualMachine); err != nil {
+	if _, err := pld.Where(" PipeCode  = ? ", pl.PipeCode).Get(&virtualMachine); err != nil {
 		fmt.Println(err.Error())
 	}
 	return virtualMachine

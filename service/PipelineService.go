@@ -95,9 +95,8 @@ func (mis *PipeLineService) PublishPipeLine(pipeLine model.PipeLine) int64 {
 
 	// 镜像仓库
 	// 通过http 请求
-	resp, err := http.Get("http://192.168.48.37:8080/job/paramete_test2" +
-		"/buildWithParameters?token=123456&branch=" + pipeLine.Branch + "&repository=" +
-		pipeLine.SshUrlToRepo + "&images=192.168.48.36")
+	resp, err := http.Get("http://192.168.48.37:8080/job/" + pipeLine.PipeCode +
+		"/build?token=123456")
 	if err != nil {
 		fmt.Println(err)
 	}

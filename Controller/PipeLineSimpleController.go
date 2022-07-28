@@ -23,7 +23,7 @@ func (pipeline *PipeLineSimpleController) Router(engine *gin.Engine) {
 }
 
 func (pipeline *PipeLineSimpleController) addpls(context *gin.Context) {
-	//调用service添加虚拟机
+	//调用service添加发布流程
 	pipeLineService := &service.PipeLineSimpleService{}
 
 	//1、解析 pipeline信息 传递参数
@@ -34,14 +34,14 @@ func (pipeline *PipeLineSimpleController) addpls(context *gin.Context) {
 		tool.Failed(context, "参数解析失败")
 		return
 	}
-	//2.查询是否存在此虚拟机发防止多次提交
+	//2.查询是否存在此发布流程发防止多次提交
 	resultpl := pipeLineService.GetPipeLineSimple(pipeLine)
 	if resultpl.Pipename != "" {
 		tool.Failed(context, "已存在Pipeline")
 		return
 	}
 
-	//调用service添加虚拟机
+	//调用service添加发布流程
 	result := pipeLineService.AddPipeLineSimple(pipeLine)
 	if 0 == result {
 		tool.Failed(context, "添加失败")
@@ -60,7 +60,7 @@ func (pipeline *PipeLineSimpleController) getplslist(context *gin.Context) {
 }
 
 func (pipeline *PipeLineSimpleController) deletepls(context *gin.Context) {
-	//调用service添加虚拟机
+	//调用service添加发布流程
 	pipeLineService := &service.PipeLineSimpleService{}
 
 	//1、解析 pipeline信息 传递参数
@@ -81,7 +81,7 @@ func (pipeline *PipeLineSimpleController) deletepls(context *gin.Context) {
 }
 
 func (pipeline *PipeLineSimpleController) updatepls(context *gin.Context) {
-	//调用service添加虚拟机
+	//调用service添加发布流程
 	pipeLineService := &service.PipeLineSimpleService{}
 
 	//1、解析 pipeline信息 传递参数

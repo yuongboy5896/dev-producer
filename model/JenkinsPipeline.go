@@ -24,7 +24,7 @@ type PipeLineSimple struct {
 	Pipename string `xorm:"varchar(50)" json:"PipeName"` //发布流程 //用户填写
 	PipeCode string `xorm:"varchar(50)" json:"PipeCode"` //模块code  //用户填写
 	Branch   string `xorm:"varchar(200)" json:"Branch"`  //模块的分支
-	ShowUrl  string `xorm:"varchar(50)" json:"ShowUrl"`
+	ShowUrl  string `xorm:"varchar(50)" json:"ShowUrl"`   
 	ModuleId int64  `xorm:"bigint" json:"ModuleId"`
 	EnvId    int64  `xorm:"bigint" json:"EnvId"`
 }
