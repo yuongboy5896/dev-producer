@@ -45,18 +45,11 @@ pipeline {
 				url: &quot;${REPOSITORY}&quot;
 			}
 		 }
-		 
-		  stage(&apos;编译&apos;){
-		    steps{
-				echo &quot;start compile&quot;	 
-		         sh &quot;mvn clean install -U -Dmaven.test.skip=true&quot;
-			}
-		 }
-		 
-		 stage(&apos;构建镜像&apos;){
+		  
+		 stage(&apos;编译构建镜像&apos;){
 		    steps{
 				echo &quot;start build image&quot;
-				sh &quot;${SCRIPT_PATH}/build-portal.sh  ${MODULE} &apos;info-pusher.jar&apos; &apos;mciroservice&apos;&quot;
+				sh &quot;${SCRIPT_PATH}/build-thpws-new.sh  ${MODULE} &apos;web&apos; &quot;
 			}
 		 }
 		 

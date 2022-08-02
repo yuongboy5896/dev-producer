@@ -45,13 +45,24 @@ func (Js *JenkinsService) CreateJobFromTmp(NewJob string, JobType string, pipeli
 	fmt.Println(string(content))
 	configString := string(content)
 
-	configString = strings.Replace(configString, "##GITURL##", pipeline.SshUrlToRepo, -1)   //代码地址
-	configString = strings.Replace(configString, "##MODULENAME##", pipeline.ModuleName, -1) //模块中文描述
-	configString = strings.Replace(configString, "##BRANCH##", pipeline.Branch, -1)         //代码分支
-	configString = strings.Replace(configString, "##DEPLOY##", pipeline.ModuleCode, -1)     //模块英文名称
-	configString = strings.Replace(configString, "##ENV##", pipeline.EnvName, -1)           //环境地址
-	configString = strings.Replace(configString, "##NAMESPACE##", pipeline.NameSpace, -1)   //命名空间
-	configString = strings.Replace(configString, "##IMAGEULR##", pipeline.ShowUrl, -1)      //上传镜像地址
+	configString = strings.Replace(configString, "##GITURL##", pipeline.SshUrlToRepo, -1)    //代码地址
+	configString = strings.Replace(configString, "##MODULENAME##", pipeline.ModuleName, -1)  //模块中文描述
+	configString = strings.Replace(configString, "##BRANCH##", pipeline.Branch, -1)          //代码分支
+	configString = strings.Replace(configString, "##DEPLOY##", pipeline.ModuleCode, -1)      //模块英文名称
+	configString = strings.Replace(configString, "##ENV##", pipeline.EnvName, -1)            //环境地址
+	configString = strings.Replace(configString, "##NAMESPACE##", pipeline.NameSpace, -1)    //命名空间
+	configString = strings.Replace(configString, "##IMAGEULR##", pipeline.ShowUrl, -1)       //上传镜像地址
+	configString = strings.Replace(configString, "git.thpyun.com", "gitlab.thpower.com", -1) // 要服务器2222端口  临时
+	configString = strings.Replace(configString, "192.168.48.15", "gitlab.thpower.com", -1)  // 要服务器2222端口  临时
+	if 1 == pipeline.EnvCommCloud {
+		str := strings.Split(pipeline.PipeCode, "-")
+		if len(str) > 0 {
+			configString = strings.Replace(configString, "install", "package", -1)
+			configString = strings.Replace(configString, "build-portal.sh", "build-portal-"+str[0]+".sh", -1)
+			configString = strings.Replace(configString, "deploy-portal.sh", "deploy-portal-"+str[0]+".sh", -1)
+		}
+
+	}
 
 	var del bool
 	getjob, err := jenkins.GetJob(ctx, NewJob)
@@ -66,7 +77,7 @@ func (Js *JenkinsService) CreateJobFromTmp(NewJob string, JobType string, pipeli
 	}
 	job, err := jenkins.CreateJobInFolder(ctx, configString, NewJob)
 	if err != nil {
-		
+
 		//panic(err)
 		return false
 	}

@@ -18,8 +18,14 @@ func NewModuleInfoDao() *ModuleInfoDao {
 //从数据库中查询所有服务器列表
 func (mid *ModuleInfoDao) QueryModuleInfos(daoPage *model.DaoPage) ([]model.ModuleInfo, error) {
 	var virtualmachines []model.ModuleInfo
-	if err := mid.Engine.Where("").Limit(daoPage.Pagenum, daoPage.Pagesize).Find(&virtualmachines); err != nil {
-		return nil, err
+	if nil == daoPage {
+		if err := mid.Engine.Find(&virtualmachines); err != nil {
+			return nil, err
+		}
+	} else {
+		if err := mid.Engine.Where("").Limit(daoPage.Pagenum, daoPage.Pagesize).Find(&virtualmachines); err != nil {
+			return nil, err
+		}
 	}
 	return virtualmachines, nil
 }

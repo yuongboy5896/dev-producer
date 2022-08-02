@@ -9,8 +9,8 @@ import (
 
 func PaseUrl(ctx *gin.Context) (model.DaoPage, error) {
 	var dp model.DaoPage
-	limit := ctx.DefaultQuery("pagesize", "8")
-	pageNumber := ctx.DefaultQuery("pagenum", "1")
+	limit := ctx.DefaultQuery("pagesize", "")
+	pageNumber := ctx.DefaultQuery("pagenum", "")
 	limitInt, err := strconv.Atoi(limit)
 	if err != nil || limitInt < 0 {
 		return dp, nil
