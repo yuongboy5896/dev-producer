@@ -27,7 +27,7 @@ pipeline {
     agent any
 	environment{
 	   REPOSITORY=&quot;##GITURL##&quot;
-		 MODULE=&quot;info-pusher-core&quot;
+		 MODULE=&quot;##DEPLOY##&quot;
 		 DESCN=&quot;##MODULENAME##&quot;
 		 SCRIPT_PATH=&quot;/home/work/scirpts&quot;
 		 BRANCH=&quot;##BRANCH##&quot;

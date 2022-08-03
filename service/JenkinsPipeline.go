@@ -56,9 +56,12 @@ func (Js *JenkinsService) CreateJobFromTmp(NewJob string, JobType string, pipeli
 	configString = strings.Replace(configString, "192.168.48.15", "gitlab.thpower.com", -1)  // 要服务器2222端口  临时
 	if 1 == pipeline.EnvCommCloud {
 		str := strings.Split(pipeline.PipeCode, "-")
-		if len(str) > 0 {
+		if len(str) > 0 && "java" == JobType {
 			configString = strings.Replace(configString, "install", "package", -1)
 			configString = strings.Replace(configString, "build-portal.sh", "build-portal-"+str[0]+".sh", -1)
+			configString = strings.Replace(configString, "deploy-portal.sh", "deploy-portal-"+str[0]+".sh", -1)
+		} else if find := strings.Contains(JobType, "vue"); len(str) > 0 && find {
+			configString = strings.Replace(configString, "build-thpws.sh", "build-thpws-"+str[0]+".sh", -1)
 			configString = strings.Replace(configString, "deploy-portal.sh", "deploy-portal-"+str[0]+".sh", -1)
 		}
 
