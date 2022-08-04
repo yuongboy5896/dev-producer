@@ -24,7 +24,7 @@ func (pipeline *PipeLineController) Router(engine *gin.Engine) {
 	// 删除pipeline
 	engine.DELETE("/api/deletepl/:Id", pipeline.deletepl)
 	// 更新pipeline
-	engine.POST("/api/updatepl", pipeline.updatepl)
+	engine.PUT("/api/updatepl/:Id", pipeline.updatepl)
 	// 发布pipeline
 	engine.PUT("/api/publishplbyid/:Id", pipeline.publishplByid)
 }
@@ -54,11 +54,13 @@ func (pipeline *PipeLineController) addpl(context *gin.Context) {
 	bcreate := jenkins.CreateJobFromTmp(pipeLine.PipeCode, pipeLine.TechnologyType, pipeLine)
 	if !bcreate {
 		tool.Failed(context, "添加jenkins pipeline 失败")
+		return
 	}
 	//调用service添加流水线
 	result := pipeLineService.AddPipeLine(pipeLine)
 	if 0 == result {
 		tool.Failed(context, "添加失败")
+		return
 	}
 	tool.Success(context, "添加成功")
 }
@@ -135,6 +137,13 @@ func (pipeline *PipeLineController) updatepl(context *gin.Context) {
 	result := pipeLineService.UpdatePipeLine(pipeLine)
 	if result == 0 {
 		tool.Failed(context, "更新失败")
+		return
+	}
+	//4 模版创建pipeline
+	jenkins := &service.JenkinsService{}
+	bcreate := jenkins.CreateJobFromTmp(pipeLine.PipeCode, pipeLine.TechnologyType, pipeLine)
+	if !bcreate {
+		tool.Failed(context, "添加jenkins pipeline 失败")
 		return
 	}
 	tool.Success(context, result)
