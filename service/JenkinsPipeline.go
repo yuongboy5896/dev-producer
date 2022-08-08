@@ -42,9 +42,7 @@ func (Js *JenkinsService) CreateJobFromTmp(NewJob string, JobType string, pipeli
 		fmt.Println("读内容失败", err)
 		return false
 	}
-	fmt.Println(string(content))
 	configString := string(content)
-
 	configString = strings.Replace(configString, "##GITURL##", pipeline.SshUrlToRepo, -1)    //代码地址
 	configString = strings.Replace(configString, "##MODULENAME##", pipeline.ModuleName, -1)  //模块中文描述
 	configString = strings.Replace(configString, "##BRANCH##", pipeline.Branch, -1)          //代码分支
