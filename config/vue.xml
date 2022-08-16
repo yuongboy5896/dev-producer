@@ -35,7 +35,7 @@ pipeline {
     agent any
 	environment{
 	   REPOSITORY=&quot;##GITURL##&quot;
-		 MODULE=&quot;info-pusher-core&quot;
+		 MODULE=&quot;##DEPLOY##&quot;
 		 DESCN=&quot;##MODULENAME##&quot;
 		 SCRIPT_PATH=&quot;/home/work/scirpts&quot;
 		 BRANCH=&quot;##BRANCH##&quot;
@@ -43,12 +43,14 @@ pipeline {
      ENV=&quot;##ENV##&quot;
      NAMESPACE=&quot;##NAMESPACE##&quot;
      IMAGEULR=&quot;##IMAGEULR##&quot;
+     ENVCODE=&quot;##ENVCODE##&quot;
 		 
 	}
 	stages {
 	     stage(&apos;获取代码&apos;){
 		    steps{
 				echo &quot;start fetch code from git:${REPOSITORY}&quot;
+        deleteDir()
 				git branch: &quot;${BRANCH}&quot;, 
 				url: &quot;${REPOSITORY}&quot;
 			}
@@ -71,7 +73,9 @@ pipeline {
 		 stage(&apos;发布系统&apos;){
 		    steps{
                 echo &quot;start deploy&quot;
-                sh &quot;${SCRIPT_PATH}/deploy-portal.sh &apos;${DEPLOY}&apos; &apos;${DEPLOY}&apos; ${MODULE}&quot;
+                //sh &quot;${SCRIPT_PATH}/deploy-portal.sh &apos;${DEPLOY}&apos; &apos;${DEPLOY}&apos; ${MODULE}&quot;
+                sh &quot;${SCRIPT_PATH}/deploy-portal-param.sh &apos;${DEPLOY}&apos; &apos;${DEPLOY}&apos;  &apos;${MODULE}&apos; &apos;${NAMESPACE}&apos; &apos;${ENVCODE}&apos;&quot; 
+                
 			}
 		 }
 	}

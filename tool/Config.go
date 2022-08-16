@@ -7,13 +7,14 @@ import (
 )
 
 type Config struct {
-	AppName     string         `json:"app_name"`
-	AppMode     string         `json:"app_mode"`
-	AppHost     string         `json:"app_host"`
-	AppPort     string         `json:"app_port"`
-	Sms         SmsConfig      `json:"sms"`
-	Database    DatabaseConfig `json:"database"`
-	RedisConfig RedisConfig    `json:"redis_config"`
+	AppName       string         `json:"app_name"`
+	AppMode       string         `json:"app_mode"`
+	AppHost       string         `json:"app_host"`
+	AppPort       string         `json:"app_port"`
+	Sms           SmsConfig      `json:"sms"`
+	Database      DatabaseConfig `json:"database"`
+	RedisConfig   RedisConfig    `json:"redis_config"`
+	JenkinsConfig JenkinsConfig  `json:"jenkins_config"`
 }
 
 type SmsConfig struct {
@@ -41,6 +42,14 @@ type RedisConfig struct {
 	Port     string `json:"port"`
 	Password string `json:"password"`
 	Db       int    `json:"db"`
+}
+
+//Jenkins属性定义
+type JenkinsConfig struct {
+	Addr     string `json:"addr"`
+	Port     string `json:"port"`
+	User     string `json:"user"`
+	Password string `json:"password"`
 }
 
 var _cfg *Config = nil

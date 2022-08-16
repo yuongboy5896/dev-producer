@@ -3,6 +3,7 @@ package service
 import (
 	"dev-producer/dao"
 	"dev-producer/model"
+	"dev-producer/tool"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -95,7 +96,9 @@ func (mis *PipeLineService) PublishPipeLine(pipeLine model.PipeLine) int64 {
 
 	// 镜像仓库
 	// 通过http 请求
-	resp, err := http.Get("http://192.168.48.37:8080/job/" + pipeLine.PipeCode +
+	config := tool.GetConfig().JenkinsConfig
+	url := "http://" + config.Addr + ":" + config.Port + "/"
+	resp, err := http.Get(url + "/job/" + pipeLine.PipeCode +
 		"/build?token=123456")
 	if err != nil {
 		fmt.Println(err)

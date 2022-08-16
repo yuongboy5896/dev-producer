@@ -49,6 +49,7 @@ pipeline {
 	     stage(&apos;获取代码&apos;){
 		    steps{
 				echo &quot;start fetch code from git:${REPOSITORY}&quot;
+        deleteDir()
 				git branch: &quot;${BRANCH}&quot;, 
 				url: &quot;${REPOSITORY}&quot;
 			}
@@ -57,7 +58,7 @@ pipeline {
 		  stage(&apos;编译&apos;){
 		    steps{
 				echo &quot;start compile&quot;	 
-		         sh &quot;mvn clean install -U -Dmaven.test.skip=true&quot;
+		         sh &quot;mvn  clean compile package -U -Dmaven.test.skip=true&quot;
 			}
 		 }
 		 

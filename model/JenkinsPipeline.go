@@ -7,6 +7,7 @@ type PipeLine struct {
 	PipeCode       string `xorm:"varchar(50)" json:"PipeCode"`       //模块code
 	TechnologyType string `xorm:"varchar(50)" json:"TechnologyType"` //发布类型 技术类型 java node go C++
 	EnvName        string `xorm:"varchar(50)" json:"EnvName"`        //发布环境名字
+	EnvCode        string `xorm:"varchar(50)" json:"EnvCode"`        //发布环境编码
 	NameSpace      string `xorm:"varchar(50)" json:"NameSpace"`      //发布环境的命名空间
 	SshUrlToRepo   string `xorm:"varchar(200)" json:"SshUrlToRepo"`  //模块的url
 	Branch         string `xorm:"varchar(200)" json:"Branch"`        //模块的分支
@@ -17,7 +18,7 @@ type PipeLine struct {
 	ShowUrl        string `xorm:"varchar(50)" json:"ShowUrl"`        //
 	ModuleId       int64  `xorm:"bigint" json:"ModuleId"`            // 模块Id
 	EnvId          int64  `xorm:"bigint" json:"EnvId"`               // 环境Id
-	EnvCommCloud   int    `xorm:"int" json:"EnvCommCloud"`           //是否共有云
+	EnvCommCloud   bool   `xorm:"int" json:"EnvCommCloud"`           //是否共有云
 }
 
 type PipeLineSimple struct {
@@ -57,7 +58,7 @@ type DeployEnv struct {
 	EnvType      string `xorm:"varchar(50)" json:"EnvType"`     // 环境类型 测试环境 生产环境
 	EnvConn      string `xorm:"varchar(50)" json:"EnvConn"`     //连接方式 api ssh
 	EnvConnPort  string `xorm:"varchar(50)" json:"EnvConnPort"` //连接方式 端口
-	EnvCommCloud int    `xorm:"int" json:"EnvCommCloud"`        //是否共有云
+	EnvCommCloud bool   `xorm:"int" json:"EnvCommCloud"`        //是否共有云
 	Desc         string `xorm:"varchar(200)" json:"Desc"`       //描述
 }
 

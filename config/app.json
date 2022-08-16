@@ -18,6 +18,12 @@
     "port": "6379",
     "password": "root1234",
     "db": 1
+  },
+  "jenkins_config": {
+    "addr": "192.168.48.37",
+    "port": "8080",
+    "user": "thpower",
+    "password": "1qaz2wsx"
   }
   
 }

@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"dev-producer/model"
+	"dev-producer/tool"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -22,7 +23,10 @@ func (Js *JenkinsService) CreateJobFromTmp(NewJob string, JobType string, pipeli
 
 	ctx := context.Background()
 	// 连接方式未封装 写到配置未做
-	jenkins := gojenkins.CreateJenkins(nil, "http://192.168.48.37:8080/", "thpower", "1qaz2wsx")
+	config := tool.GetConfig().JenkinsConfig
+	url := "http://" + config.Addr + ":" + config.Port + "/"
+
+	jenkins := gojenkins.CreateJenkins(nil, url, config.User, config.Password)
 	_, err := jenkins.Init(ctx)
 	if err != nil {
 		log.Printf("连接Jenkins失败, %v\n", err)
@@ -43,16 +47,17 @@ func (Js *JenkinsService) CreateJobFromTmp(NewJob string, JobType string, pipeli
 		return false
 	}
 	configString := string(content)
-	configString = strings.Replace(configString, "##GITURL##", pipeline.SshUrlToRepo, -1)    //代码地址
-	configString = strings.Replace(configString, "##MODULENAME##", pipeline.ModuleName, -1)  //模块中文描述
-	configString = strings.Replace(configString, "##BRANCH##", pipeline.Branch, -1)          //代码分支
-	configString = strings.Replace(configString, "##DEPLOY##", pipeline.ModuleCode, -1)      //模块英文名称
-	configString = strings.Replace(configString, "##ENV##", pipeline.EnvName, -1)            //环境地址
-	configString = strings.Replace(configString, "##NAMESPACE##", pipeline.NameSpace, -1)    //命名空间
-	configString = strings.Replace(configString, "##IMAGEULR##", pipeline.ShowUrl, -1)       //上传镜像地址
+	configString = strings.Replace(configString, "##GITURL##", pipeline.SshUrlToRepo, -1)   //代码地址
+	configString = strings.Replace(configString, "##MODULENAME##", pipeline.ModuleName, -1) //模块中文描述
+	configString = strings.Replace(configString, "##BRANCH##", pipeline.Branch, -1)         //代码分支
+	configString = strings.Replace(configString, "##DEPLOY##", pipeline.ModuleCode, -1)     //模块英文名称
+	configString = strings.Replace(configString, "##ENV##", pipeline.EnvName, -1)           //环境地址
+	configString = strings.Replace(configString, "##NAMESPACE##", pipeline.NameSpace, -1)   //命名空间
+	configString = strings.Replace(configString, "##IMAGEULR##", pipeline.ShowUrl, -1)
+	configString = strings.Replace(configString, "##ENVCODE##", pipeline.EnvCode, -1)        //上传镜像地址
 	configString = strings.Replace(configString, "git.thpyun.com", "gitlab.thpower.com", -1) // 要服务器2222端口  临时
 	configString = strings.Replace(configString, "192.168.48.15", "gitlab.thpower.com", -1)  // 要服务器2222端口  临时
-	if 1 == pipeline.EnvCommCloud {
+	if pipeline.EnvCommCloud {
 		str := strings.Split(pipeline.PipeCode, "-")
 		if len(str) > 0 && "java" == JobType {
 			configString = strings.Replace(configString, "install", "package", -1)
@@ -61,6 +66,9 @@ func (Js *JenkinsService) CreateJobFromTmp(NewJob string, JobType string, pipeli
 		} else if find := strings.Contains(JobType, "vue"); len(str) > 0 && find {
 			configString = strings.Replace(configString, "build-thpws.sh", "build-thpws-"+str[0]+".sh", -1)
 			configString = strings.Replace(configString, "deploy-portal.sh", "deploy-portal-"+str[0]+".sh", -1)
+		} else if find := strings.Contains(JobType, "vue-new"); len(str) > 0 && find {
+			configString = strings.Replace(configString, "build-thpws.sh", "build-thpws-"+str[0]+"-new.sh", -1)
+			configString = strings.Replace(configString, "deploy-portal.sh", "deploy-portal-"+str[0]+"-new.sh", -1)
 		}
 
 	}
