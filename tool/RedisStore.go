@@ -36,6 +36,14 @@ func (rs *RedisStore) Set(id string, value string) {
 	}
 }
 
+// set
+func (rs *RedisStore) SetTime(id string, value string, t int) {
+	err := rs.client.Set(id, value, time.Minute*-1).Err()
+	if err != nil {
+		log.Println(err)
+	}
+}
+
 // get
 func (rs *RedisStore) Get(id string, clear bool) string {
 	val, err := rs.client.Get(id).Result()

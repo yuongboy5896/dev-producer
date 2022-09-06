@@ -27,6 +27,8 @@ func (pipeline *PipeLineController) Router(engine *gin.Engine) {
 	engine.PUT("/api/updatepl/:Id", pipeline.updatepl)
 	// 发布pipeline
 	engine.PUT("/api/publishplbyid/:Id", pipeline.publishplByid)
+	// 发布pipeline
+	engine.GET("/api/getjenkinsurl", pipeline.jenkinsUrl)
 }
 
 func (pipeline *PipeLineController) addpl(context *gin.Context) {
@@ -165,4 +167,15 @@ func (pipeline *PipeLineController) publishplByid(context *gin.Context) {
 	pipeLineService.PublishPipeLine(pipeLine)
 
 	tool.Success(context, pipeLine)
+}
+
+//
+func (pipeline *PipeLineController) jenkinsUrl (context *gin.Context) {
+
+
+	
+	config := tool.GetConfig().JenkinsConfig
+	url := "http://" + config.Addr + ":" + config.Port + "/job/"
+
+	tool.Success(context, url)
 }

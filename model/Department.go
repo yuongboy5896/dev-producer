@@ -9,3 +9,8 @@ type Department struct {
 	Cmd           string `xorm:"varchar(200)" json:"Cmd"`
 	Type          string `xorm:"varchar(200)" json:"Type"`
 }
+
+type Department-key struct {
+	Id  int64 `xorm:"pk autoincr" json:"Id"`
+	AccountKey  string `xorm:"varchar(200)" json:"AccountKey"`
+}
