@@ -48,29 +48,58 @@ func (mi *ModuleInfoController) addmi(context *gin.Context) {
 		tool.Failed(context, "已存在服务模块")
 		return
 	}
-	//设置gitlabid
-	gitlabService := &service.GitlabService{}
-	for j := 1; j < 20; j++ {
-		page := fmt.Sprintf("%d", j)
-		gitlabProjects, err := gitlabService.GitlabProject(page)
-		//http://192.168.48.15:8080/thpower-energy-cloud/enterpriseplatform
-		//http://gitlab.thpower.com:8080/thpower-energy-cloud/enterpriseplatform.git
-		if err != nil {
-			tool.Failed(context, "添加失败")
-			return
-		}
-		web_url := strings.Split(moduleInfo.GitlabUrl, "/")
-		strsize := len(web_url)
-		lasturl := web_url[strsize-2] + "/" + web_url[strsize-1]
-		for i := 0; i < len(gitlabProjects); i++ {
-			fmt.Println(gitlabProjects[i].Web_url)
-			if find := strings.Contains(gitlabProjects[i].Web_url, lasturl); find {
-				moduleInfo.HttpUrlToRepo = gitlabProjects[i].Http_url_to_repo
-				moduleInfo.SshUrlToRepo = gitlabProjects[i].Ssh_url_to_repo
-				//moduleInfo.GitlabId = gitlabProjects[i].Id
-				str := fmt.Sprintf("%d", gitlabProjects[i].Id)
-				moduleInfo.GitlabId = str
-				break
+	//
+	web_url := strings.Split(moduleInfo.GitlabUrl, "/")
+	strsize := len(web_url)
+	lasturl := web_url[strsize-2] + "/" + web_url[strsize-1]
+	//从缓存里拿到相关模块信息
+	redisStore := tool.InitRedisStore()
+	strModel := redisStore.Get(lasturl, false)
+	var gitlabProject model.GitlabProject
+	json.Unmarshal([]byte(strModel), &gitlabProject)
+	if strModel != "" {
+		moduleInfo.HttpUrlToRepo = gitlabProject.Http_url_to_repo
+		moduleInfo.SshUrlToRepo = gitlabProject.Ssh_url_to_repo
+		//moduleInfo.GitlabId = gitlabProjects[i].Id
+		str := fmt.Sprintf("%d", gitlabProject.Id)
+		moduleInfo.GitlabId = str
+	} else {
+		fmt.Println(strModel)
+		//设置gitlabid
+		gitlabService := &service.GitlabService{}
+		for j := 1; j < 20; j++ {
+			page := fmt.Sprintf("%d", j)
+			gitlabProjects, err := gitlabService.GitlabProject(page)
+			//http://192.168.48.15:8080/thpower-energy-cloud/enterpriseplatform
+			//http://gitlab.thpower.com:8080/thpower-energy-cloud/enterpriseplatform.git
+			if err != nil {
+				tool.Failed(context, "添加失败")
+				return
+			}
+
+			for i := 0; i < len(gitlabProjects); i++ {
+				//
+				gitlabProjectjson, err := json.Marshal(gitlabProjects[i])
+				if err != nil {
+					fmt.Print(" err  " + err.Error())
+				}
+				url := strings.Split(gitlabProjects[i].Web_url, "/")
+				urlsize := len(url)
+				if urlsize < 2 {
+					continue
+				}
+				tempurl := url[strsize-2] + "/" + url[strsize-1]
+
+				redisStore.Set(tempurl, string(gitlabProjectjson))
+				fmt.Println(gitlabProjects[i].Web_url)
+				if find := strings.Contains(gitlabProjects[i].Web_url, lasturl); find {
+					moduleInfo.HttpUrlToRepo = gitlabProjects[i].Http_url_to_repo
+					moduleInfo.SshUrlToRepo = gitlabProjects[i].Ssh_url_to_repo
+					//moduleInfo.GitlabId = gitlabProjects[i].Id
+					str := fmt.Sprintf("%d", gitlabProjects[i].Id)
+					moduleInfo.GitlabId = str
+					break
+				}
 			}
 		}
 	}
