@@ -6,32 +6,32 @@ import (
 	"fmt"
 )
 
-type TemplateDao struct {
+type TemplateInfoDao struct {
 	*tool.Orm
 }
 
 //实例化Dao对象
-func NewTemplateDao() *TemplateDao {
-	return &TemplateDao{tool.DbEngine}
+func NewTemplateInfoDao() *TemplateInfoDao {
+	return &TemplateInfoDao{tool.DbEngine}
 }
 
 //从数据库中查询所有模版
-func (Td *TemplateDao) QueryTemplates(daoPage *model.DaoPage) ([]model.Template, error) {
-	var templates []model.Template
+func (Td *TemplateInfoDao) QueryTemplateInfos(daoPage *model.DaoPage) ([]model.TemplateInfo, error) {
+	var TemplateInfos []model.TemplateInfo
 	if nil == daoPage {
-		if err := Td.Engine.Find(&templates); err != nil {
+		if err := Td.Engine.Find(&TemplateInfos); err != nil {
 			return nil, err
 		}
 	} else {
-		if err := Td.Engine.Where("").Limit(daoPage.Pagenum, daoPage.Pagesize).Find(&templates); err != nil {
+		if err := Td.Engine.Where("").Limit(daoPage.Pagenum, daoPage.Pagesize).Find(&TemplateInfos); err != nil {
 			return nil, err
 		}
 	}
-	return templates, nil
+	return TemplateInfos, nil
 }
 
 //新发布模版的数据库插入操作
-func (mid *TemplateDao) InsertTemplate(virtualMachine model.Template) int64 {
+func (mid *TemplateInfoDao) InsertTemplateInfo(virtualMachine model.TemplateInfo) int64 {
 	result, err := mid.InsertOne(&virtualMachine)
 	if err != nil {
 		fmt.Println(err.Error())
@@ -41,25 +41,25 @@ func (mid *TemplateDao) InsertTemplate(virtualMachine model.Template) int64 {
 }
 
 //查询发布模版是否存在
-func (mid *TemplateDao) QueryByTemplate(mi model.Template) model.Template {
-	var Template model.Template
-	if _, err := mid.Where(" TemplateCode   = ? ", mi.TemplateCode).Get(&Template); err != nil {
+func (mid *TemplateInfoDao) QueryByTemplateInfo(mi model.TemplateInfo) model.TemplateInfo {
+	var TemplateInfo model.TemplateInfo
+	if _, err := mid.Where(" TemplateCode   = ? ", mi.TemplateCode).Get(&TemplateInfo); err != nil {
 		fmt.Println(err.Error())
 	}
-	return Template
+	return TemplateInfo
 }
 
 //查询发布模版是否存在
-func (mid *TemplateDao) QueryByIdTemplate(mi model.Template) model.Template {
-	var Template model.Template
-	if _, err := mid.Where(" Id  = ? ", mi.Id).Get(&Template); err != nil {
+func (mid *TemplateInfoDao) QueryByIdTemplateInfo(mi model.TemplateInfo) model.TemplateInfo {
+	var TemplateInfo model.TemplateInfo
+	if _, err := mid.Where(" Id  = ? ", mi.Id).Get(&TemplateInfo); err != nil {
 		fmt.Println(err.Error())
 	}
-	return Template
+	return TemplateInfo
 }
 
 //删除发布模版
-func (mid *TemplateDao) DeleteTemplate(mi model.Template) int64 {
+func (mid *TemplateInfoDao) DeleteTemplateInfo(mi model.TemplateInfo) int64 {
 
 	if _, err := mid.Where("  Id  = ? ", mi.Id).Delete(mi); err != nil {
 		fmt.Println(err.Error())
@@ -69,7 +69,7 @@ func (mid *TemplateDao) DeleteTemplate(mi model.Template) int64 {
 }
 
 //更新发布模版
-func (mid *TemplateDao) UpdateTemplate(mi model.Template) int64 {
+func (mid *TemplateInfoDao) UpdateTemplateInfo(mi model.TemplateInfo) int64 {
 
 	if result, err := mid.Where("  Id  = ? ", mi.Id).Update(mi); err != nil {
 		fmt.Println(err.Error(), result)

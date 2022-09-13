@@ -5,26 +5,26 @@ import (
 	"dev-producer/model"
 )
 
-type TemplateService struct {
+type TemplateInfoService struct {
 }
 
 /**
- * 获取获取 Template
+ * 获取获取 TemplateInfo
  */
-func (mis *TemplateService) Templatelist(daoPage *model.DaoPage) ([]model.Template, error) {
+func (mis *TemplateInfoService) TemplateInfolist(daoPage *model.DaoPage) ([]model.TemplateInfo, error) {
 	//数据库操作层
-	templateDao := dao.NewTemplateDao()
-	return templateDao.QueryTemplates(daoPage)
+	TemplateInfoDao := dao.NewTemplateInfoDao()
+	return TemplateInfoDao.QueryTemplateInfos(daoPage)
 }
 
 /*
 * 添加发布模版
  */
-func (mis *TemplateService) AddTemplate(Template model.Template) int64 {
+func (mis *TemplateInfoService) AddTemplateInfo(TemplateInfo model.TemplateInfo) int64 {
 
-	vmD := dao.NewTemplateDao()
+	vmD := dao.NewTemplateInfoDao()
 
-	result := vmD.InsertTemplate(Template)
+	result := vmD.InsertTemplateInfo(TemplateInfo)
 
 	return result
 }
@@ -32,11 +32,11 @@ func (mis *TemplateService) AddTemplate(Template model.Template) int64 {
 /*
 * 查询发布模版
  */
-func (mis *TemplateService) GetTemplate(Template model.Template) model.Template {
+func (mis *TemplateInfoService) GetTemplateInfo(TemplateInfo model.TemplateInfo) model.TemplateInfo {
 
-	vmD := dao.NewTemplateDao()
+	vmD := dao.NewTemplateInfoDao()
 
-	result := vmD.QueryByTemplate(Template)
+	result := vmD.QueryByTemplateInfo(TemplateInfo)
 
 	return result
 }
@@ -44,11 +44,11 @@ func (mis *TemplateService) GetTemplate(Template model.Template) model.Template 
 /*
 * 查询发布模版根据
  */
-func (mis *TemplateService) GetTemplateById(Template model.Template) model.Template {
+func (mis *TemplateInfoService) GetTemplateInfoById(TemplateInfo model.TemplateInfo) model.TemplateInfo {
 
-	vmD := dao.NewTemplateDao()
+	vmD := dao.NewTemplateInfoDao()
 
-	result := vmD.QueryByIdTemplate(Template)
+	result := vmD.QueryByIdTemplateInfo(TemplateInfo)
 
 	return result
 }
@@ -56,11 +56,11 @@ func (mis *TemplateService) GetTemplateById(Template model.Template) model.Templ
 /*
 * 删除发布模版
  */
-func (mis *TemplateService) DeleteTemplate(Template model.Template) int64 {
+func (mis *TemplateInfoService) DeleteTemplateInfo(TemplateInfo model.TemplateInfo) int64 {
 
-	vmD := dao.NewTemplateDao()
+	vmD := dao.NewTemplateInfoDao()
 
-	result := vmD.DeleteTemplate(Template)
+	result := vmD.DeleteTemplateInfo(TemplateInfo)
 
 	return result
 }
@@ -68,11 +68,11 @@ func (mis *TemplateService) DeleteTemplate(Template model.Template) int64 {
 /*
 * 更新发布模版
  */
-func (mis *TemplateService) UpdateTemplate(Template model.Template) int64 {
+func (mis *TemplateInfoService) UpdateTemplateInfo(TemplateInfo model.TemplateInfo) int64 {
 
-	vmD := dao.NewTemplateDao()
+	vmD := dao.NewTemplateInfoDao()
 
-	result := vmD.UpdateTemplate(Template)
+	result := vmD.UpdateTemplateInfo(TemplateInfo)
 
 	return result
 }
