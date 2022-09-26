@@ -17,11 +17,11 @@ func (vm *TemplateInfoControl) Router(engine *gin.Engine) {
 	//添加模版
 	engine.POST("/api/addtc", vm.addTc)
 	//修改模版
-	engine.POST("/api/updatetc", vm.updateTc)
+	engine.PUT("/api/updatetc/:Id", vm.updateTc)
 	//删除模版
-	engine.POST("/api/deltc", vm.delTc)
+	engine.DELETE("/api/deltc/:Id", vm.delTc)
 	//获取模版列表
-	engine.POST("/api/gettclist", vm.getTclist)
+	engine.GET("/api/gettclist", vm.getTclist)
 	// 获取ModuleInfo
 	engine.GET("/api/gettc/:Id", vm.gettem)
 }
@@ -80,12 +80,14 @@ func (vm *TemplateInfoControl) delTc(context *gin.Context) {
 
 	//1、解析 模版信息 传递参数
 	var TemplateInfo model.TemplateInfo
-	println(context.Request.Body)
-	err := tool.Decode(context.Request.Body, &TemplateInfo)
+	Id := context.Param("Id")
+	Id64, err := strconv.ParseInt(Id, 10, 64)
 	if err != nil {
 		tool.Failed(context, "参数解析失败")
 		return
 	}
+	TemplateInfo.Id = Id64
+
 	//删除操作
 	result := TemplateInfoService.DeleteTemplateInfo(TemplateInfo)
 	if result == 0 {
