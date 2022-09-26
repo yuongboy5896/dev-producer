@@ -37,8 +37,8 @@ func (rs *RedisStore) Set(id string, value string) {
 }
 
 // set
-func (rs *RedisStore) SetTime(id string, value string, t int) {
-	err := rs.client.Set(id, value, time.Minute*-1).Err()
+func (rs *RedisStore) SetTimeZero(id string, value string) {
+	err := rs.client.Set(id, value, 0).Err()
 	if err != nil {
 		log.Println(err)
 	}

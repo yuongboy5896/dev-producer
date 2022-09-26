@@ -91,7 +91,7 @@ func (mi *ModuleInfoController) addmi(context *gin.Context) {
 				}
 				tempurl := url[strsize-2] + "/" + url[strsize-1]
 
-				redisStore.Set(tempurl, string(gitlabProjectjson))
+				redisStore.SetTimeZero(tempurl, string(gitlabProjectjson))
 				fmt.Println(gitlabProjects[i].Web_url)
 				if find := strings.Contains(gitlabProjects[i].Web_url, lasturl); find {
 					moduleInfo.HttpUrlToRepo = gitlabProjects[i].Http_url_to_repo
