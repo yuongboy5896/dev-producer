@@ -70,6 +70,7 @@ func registerRouter(router *gin.Engine) {
 	new(Controller.PipeTemporayController).Router(router)
 	new(Controller.IpWithPortController).Router(router)
 	new(Controller.TemplateInfoControl).Router(router)
+
 }
 
 //跨域访问：cross  origin resource share
