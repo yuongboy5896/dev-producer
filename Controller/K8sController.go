@@ -52,10 +52,15 @@ func (k8sController *K8sController) GetNameSpaces(context *gin.Context) {
 	//调用service添加服务
 	Id64, err := strconv.ParseInt(clusterid, 10, 64)
 	if err != nil {
-		tool.Failed(context, "获取集群信息")
+		tool.Failed(context, "获取集群信息解析")
 		return
 	}
 	k8sApiService := &service.K8sApiService{}
-	k8sApiService.GetNameSpaces(Id64)
-	tool.Success(context, "OK")
+	items, err := k8sApiService.GetNameSpaces(Id64)
+	if err != nil {
+		tool.Failed(context, "获取集群信息失败")
+		return
+	}
+	tool.Success(context, items)
+	return
 }
