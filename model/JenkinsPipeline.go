@@ -48,8 +48,8 @@ type ModuleInfo struct {
 	SshUrlToRepo   string `xorm:"varchar(200)" json:"SshUrlToRepo"`
 	HttpUrlToRepo  string `xorm:"varchar(200)" json:"HttpUrlToRepo"`
 	ProjectType    string `xorm:"varchar(50)" json:"ProjectType"` //项目列表 镜像仓库用 web 微服务 物联网等分类
-	ModulePort     string `xorm:"bigint" json:"ModulePort"`       //模块的端口
-	ModuleUrl      string `xorm:"bigint" json:"ModuleUrl"`        //模块的上下文地址 前端需要填
+	ModulePort     int64  `xorm:"bigint" json:"ModulePort"`       //模块的端口
+	ModuleUrl      string `xorm:"varchar(200)" json:"ModuleUrl"`  //模块的上下文地址 前端需要填
 }
 
 type DeployEnv struct {
@@ -61,6 +61,7 @@ type DeployEnv struct {
 	EnvConn      string `xorm:"varchar(50)" json:"EnvConn"`     //连接方式 api ssh
 	EnvConnPort  string `xorm:"varchar(50)" json:"EnvConnPort"` //连接方式 端口
 	EnvCommCloud bool   `xorm:"int" json:"EnvCommCloud"`        //是否共有云
+	EnvKey       string `xorm:"Text" json:"EnvKey"`             //key
 	Desc         string `xorm:"varchar(200)" json:"Desc"`       //描述
 }
 
