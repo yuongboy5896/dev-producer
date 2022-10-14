@@ -41,7 +41,7 @@ func GetHttpsSkip(url, token string) ([]byte, error) {
 	resp, err = client.Do(request)
 	if err != nil {
 		log.Println("GetHttpSkip Response Error:", err)
-		return nil, nil
+		return nil, err
 	}
 	defer resp.Body.Close()
 	body, err = ioutil.ReadAll(resp.Body)
