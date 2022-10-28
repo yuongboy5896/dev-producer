@@ -16,7 +16,8 @@ type PipeLine struct {
 	ModuleCode     string `xorm:"varchar(50)" json:"ModuleCode"`     //模块的编码
 	Department     string `xorm:"varchar(50)" json:"Department"`     //模块的名字
 	ShowUrl        string `xorm:"varchar(50)" json:"ShowUrl"`        //
-	ModuleId       int64  `xorm:"bigint" json:"ModuleId"`            // 模块Id
+	YamlId         int64  `xorm:"bigint" json:"YamlId"`              // 发布模块Id
+	RegistryId     int64  `xorm:"bigint" json:"RegistryId"`          // 镜像仓库ID
 	EnvId          int64  `xorm:"bigint" json:"EnvId"`               // 环境Id
 	EnvCommCloud   bool   `xorm:"int" json:"EnvCommCloud"`           //是否共有云
 }

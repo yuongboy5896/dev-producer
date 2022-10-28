@@ -1,6 +1,8 @@
 package Controller
 
 import (
+	"dev-producer/model"
+	"dev-producer/param"
 	"dev-producer/service"
 	"dev-producer/tool"
 	"strconv"
@@ -13,11 +15,15 @@ type K8sController struct {
 
 func (k8sController *K8sController) Router(engine *gin.Engine) {
 	//engine.GET("/api/getdeploys", k8sController.GetDeploy)
-
+	//
 	engine.GET("/api/getnamesapces", k8sController.GetNameSpaces)
+	//
+	engine.POST("/api/createfromyaml", k8sController.CreateFromYaml)
+	//
+	engine.GET("/api/getdeploystatus", k8sController.GetDeployStatus)
 }
 
-//http://localhost:8090/api/getdeploys?namespace=default&deploy=test&clusterid=111
+//http://localhost:8090/api/getdeploys?namespace=default&deploy=test&envid=111
 func (k8sController *K8sController) GetDeploy(context *gin.Context) {
 
 	clusterid, exist := context.GetQuery("clusterid")
@@ -63,4 +69,54 @@ func (k8sController *K8sController) GetNameSpaces(context *gin.Context) {
 	}
 	tool.Success(context, items)
 	return
+}
+
+//部署yaml
+func (K8sController *K8sController) CreateFromYaml(context *gin.Context) {
+	//模版信息 是从项目信息中的编号
+	//1、解析项目传递参数
+	var pipelineParam model.PipeLine
+
+	err := tool.Decode(context.Request.Body, &pipelineParam)
+	if err != nil {
+		tool.Failed(context, "参数解析失败")
+		return
+	}
+
+}
+
+//获取项目状态
+func (K8sController *K8sController) GetDeployStatus(context *gin.Context) {
+	//以 模块编号为准
+	ModuleCode, exist := context.GetQuery("modulecode")
+	if !exist {
+		tool.Failed(context, "参数解析失败"+ModuleCode)
+		return
+	}
+	NameSpace, exist := context.GetQuery("namespace")
+	if !exist {
+		tool.Failed(context, "参数解析失败"+NameSpace)
+		return
+	}
+	envid, exist := context.GetQuery("envid")
+	if !exist {
+		tool.Failed(context, "参数解析失败"+envid)
+		return
+	}
+	var getDeployParam param.K8sGetDeployParam
+	getDeployParam.ModuleCode = ModuleCode
+	getDeployParam.NameSpace = NameSpace
+	Id64, err := strconv.ParseInt(envid, 10, 64)
+	getDeployParam.EnvId = Id64
+	k8sApiService := &service.K8sApiService{}
+	is, err := k8sApiService.GetDeployInfo(getDeployParam)
+	if err != nil {
+		tool.Failed(context, "调用k8s失败")
+		return
+	}
+	if !is {
+		tool.Failed(context, "模块不存在")
+		return
+	}
+	tool.Success(context, "模块存在")
 }

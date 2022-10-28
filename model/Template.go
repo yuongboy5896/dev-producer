@@ -7,5 +7,6 @@ type TemplateInfo struct {
 	TemplateCode   string `xorm:"varchar(50)" json:"TemplateCode"` //模版编码
 	TemplateType   string `xorm:"Text" json:"TemplateType"`        //模版类型
 	TemplateText   string `xorm:"Text" json:"TemplateText"`        //模版yaml
+	ReplaceText    string `xorm:"Text" json:"TReplaceText"`        //对yaml模版数据替换 json??
 	TemplateJekins string `xorm:"Text" json:"TemplateJekins"`      //模版jenkins模版
 }
