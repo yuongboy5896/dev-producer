@@ -82,7 +82,7 @@ func (K8sController *K8sController) CreateFromYaml(context *gin.Context) {
 		tool.Failed(context, "参数解析失败")
 		return
 	}
-
+	tool.Success(context, "部署成功")
 }
 
 //获取项目状态

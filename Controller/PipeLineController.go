@@ -77,7 +77,6 @@ func (pipeline *PipeLineController) getpllist(context *gin.Context) {
 	tool.Success(context, pipeLines)
 }
 func (pipeline *PipeLineController) getpllistbygitlabid(context *gin.Context) {
-
 	Id := context.Param("GitlabId")
 	Id64, err := strconv.ParseInt(Id, 10, 64)
 	pipeLineService := &service.PipeLineService{}
