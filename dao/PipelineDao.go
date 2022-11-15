@@ -15,7 +15,7 @@ func NewPipeLineDao() *PipeLineDao {
 	return &PipeLineDao{tool.DbEngine}
 }
 
-//从数据库中查询所有服务器列表
+//从数据库中查询所有流水线列表
 func (pld *PipeLineDao) QueryPipeLines() ([]model.PipeLine, error) {
 	var pipeLine []model.PipeLine
 	if err := pld.Engine.Find(&pipeLine); err != nil {
@@ -24,7 +24,7 @@ func (pld *PipeLineDao) QueryPipeLines() ([]model.PipeLine, error) {
 	return pipeLine, nil
 }
 
-// 从数据库中查询所有服务器列表
+// 从数据库中查询所有流水线列表
 func (pld *PipeLineDao) QueryPipeLinesByGitlabeID(GitlabId int64) ([]model.PipeLine, error) {
 	var pipeLine []model.PipeLine
 	if err := pld.Where("GitlabId  = ? ", GitlabId).Find(&pipeLine); err != nil {
@@ -33,7 +33,7 @@ func (pld *PipeLineDao) QueryPipeLinesByGitlabeID(GitlabId int64) ([]model.PipeL
 	return pipeLine, nil
 }
 
-// 从数据库中查询所有服务器列表
+// 从数据库中查询所有流水线列表
 func (pld *PipeLineDao) QueryPipeLinesByID(GitlabId int64) (model.PipeLine, error) {
 	var pipeLine model.PipeLine
 	if _, err := pld.Where(" Id  = ? ", GitlabId).Get(&pipeLine); err != nil {
@@ -42,7 +42,7 @@ func (pld *PipeLineDao) QueryPipeLinesByID(GitlabId int64) (model.PipeLine, erro
 	return pipeLine, nil
 }
 
-//新虚拟机的数据库插入操作
+//新流水线的数据库插入操作
 func (pld *PipeLineDao) InsertPipeLine(virtualMachine model.PipeLine) int64 {
 	result, err := pld.InsertOne(&virtualMachine)
 	if err != nil {
@@ -61,7 +61,7 @@ func (pld *PipeLineDao) QueryByPipeLines(pl model.PipeLine) model.PipeLine {
 	return virtualMachine
 }
 
-//删除虚拟机
+//删除流水线
 func (pld *PipeLineDao) DeletePipeLine(pl model.PipeLine) int64 {
 
 	if _, err := pld.Where("  Id  = ? ", pl.Id).Delete(pl); err != nil {
@@ -71,7 +71,7 @@ func (pld *PipeLineDao) DeletePipeLine(pl model.PipeLine) int64 {
 	return 1
 }
 
-//更新虚拟机
+//更新流水线
 func (pld *PipeLineDao) UpdatePipeLine(pl model.PipeLine) int64 {
 
 	if result, err := pld.Where("  Pipename  = ? ", pl.Pipename).Update(pl); err != nil {
@@ -79,4 +79,21 @@ func (pld *PipeLineDao) UpdatePipeLine(pl model.PipeLine) int64 {
 		return 0
 	}
 	return 1
+}
+
+//获取部署详细信息
+func (pld *PipeLineDao) QueryByPipeLineInfo(pl model.PipeLine) (model.PipeLineInfo, error) {
+	//pipeLineInfo := make([]model.PipeLineInfo, 0)
+	var pipeLineInfo  model.PipeLineInfo
+	IDstr := fmt.Sprintf("%d", pl.Id)
+	_, err := pld.Engine.Table("PipeLine").
+		Join("INNER", "DeployEnv", "DeployEnv.Id = PipeLine.EnvId").
+		Join("INNER", "TemplateInfo", "TemplateInfo.Id = PipeLine.YamlId").
+		Where("  PipeLine.Id  = "+IDstr).
+		Get(&pipeLineInfo)
+	if err != nil {
+		return pipeLineInfo, err
+	}
+	return pipeLineInfo, err
+
 }

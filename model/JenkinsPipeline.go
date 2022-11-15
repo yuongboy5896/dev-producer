@@ -16,9 +16,9 @@ type PipeLine struct {
 	ModuleCode     string `xorm:"varchar(50)" json:"ModuleCode"`     //模块的编码
 	Department     string `xorm:"varchar(50)" json:"Department"`     //模块的名字
 	ShowUrl        string `xorm:"varchar(50)" json:"ShowUrl"`        //
-	YamlId         int64  `xorm:"bigint" json:"YamlId"`              // 发布模块Id
-	RegistryId     int64  `xorm:"bigint" json:"RegistryId"`          // 镜像仓库ID
-	EnvId          int64  `xorm:"bigint" json:"EnvId"`               // 环境Id
+	YamlId         int64  `xorm:"index" json:"YamlId"`               // 发布模块Id 取名字取得不好
+	RegistryId     int64  `xorm:"index" json:"RegistryId"`           // 镜像仓库ID
+	EnvId          int64  `xorm:"index" json:"EnvId"`                // 环境Id
 	EnvCommCloud   bool   `xorm:"int" json:"EnvCommCloud"`           //是否共有云
 }
 
@@ -81,4 +81,11 @@ type ModuleForImageUrl struct {
 	ImageUrl   string `xorm:"varchar(300)" json:"ImageUrl"`           //镜像地址
 	NameSpace  string `xorm:"varchar(50)" json:"NameSpace"`           //命名空间
 	DeployEnv  string `xorm:"varchar(50)" json:"DeployEnv"`           //环境地址
+}
+
+//部署详细信息
+type PipeLineInfo struct {
+	PipeLine     `xorm:"extends"`
+	DeployEnv    `xorm:"extends"`
+	TemplateInfo `xorm:"extends"`
 }

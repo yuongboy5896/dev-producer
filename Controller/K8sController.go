@@ -78,6 +78,8 @@ func (K8sController *K8sController) CreateFromYaml(context *gin.Context) {
 	var pipelineParam model.PipeLine
 
 	err := tool.Decode(context.Request.Body, &pipelineParam)
+	k8sApiService := &service.K8sApiService{}
+	k8sApiService.CreateFromYaml(pipelineParam)
 	if err != nil {
 		tool.Failed(context, "参数解析失败")
 		return

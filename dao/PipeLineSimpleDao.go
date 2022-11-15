@@ -15,7 +15,7 @@ func NewPipeLineSimpleDao() *PipeLineSimpleDao {
 	return &PipeLineSimpleDao{tool.DbEngine}
 }
 
-//从数据库中查询所有服务器列表
+//从数据库中查询所有流水线列表
 func (pld *PipeLineSimpleDao) QueryPipeLineSimples() ([]model.PipeLineSimple, error) {
 	var pipeLine []model.PipeLineSimple
 	if err := pld.Engine.Find(&pipeLine); err != nil {
@@ -24,7 +24,7 @@ func (pld *PipeLineSimpleDao) QueryPipeLineSimples() ([]model.PipeLineSimple, er
 	return pipeLine, nil
 }
 
-//新虚拟机的数据库插入操作
+//新流水线的数据库插入操作
 func (pld *PipeLineSimpleDao) InsertPipeLineSimple(virtualMachine model.PipeLineSimple) int64 {
 	result, err := pld.InsertOne(&virtualMachine)
 	if err != nil {
@@ -34,7 +34,7 @@ func (pld *PipeLineSimpleDao) InsertPipeLineSimple(virtualMachine model.PipeLine
 	return result
 }
 
-//查询虚拟机是否存在
+//查询流水线是否存在
 func (pld *PipeLineSimpleDao) QueryByPipeLineSimples(pl model.PipeLineSimple) model.PipeLineSimple {
 	var virtualMachine model.PipeLineSimple
 	if _, err := pld.Where(" Pipename  = ? ", pl.Pipename).Get(&virtualMachine); err != nil {
@@ -43,7 +43,7 @@ func (pld *PipeLineSimpleDao) QueryByPipeLineSimples(pl model.PipeLineSimple) mo
 	return virtualMachine
 }
 
-//删除虚拟机
+//删除流水线
 func (pld *PipeLineSimpleDao) DeletePipeLineSimple(pl model.PipeLineSimple) int64 {
 
 	if _, err := pld.Where("  Pipename  = ? ", pl.Pipename).Delete(pl); err != nil {
@@ -53,7 +53,7 @@ func (pld *PipeLineSimpleDao) DeletePipeLineSimple(pl model.PipeLineSimple) int6
 	return 1
 }
 
-//更新虚拟机
+//更新流水线
 func (pld *PipeLineSimpleDao) UpdatePipeLineSimple(pl model.PipeLineSimple) int64 {
 
 	if result, err := pld.Where("  Pipename  = ? ", pl.Pipename).Update(pl); err != nil {
