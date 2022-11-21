@@ -1,25 +1,26 @@
 package model
 
 //
+//缺少端口可能是多个;
 type PipeLine struct {
 	Id             int64  `xorm:"pk autoincr" json:"Id"`
-	Pipename       string `xorm:"varchar(50)" json:"PipeName"`       //发布流程
-	PipeCode       string `xorm:"varchar(50)" json:"PipeCode"`       //模块code
-	TechnologyType string `xorm:"varchar(50)" json:"TechnologyType"` //发布类型 技术类型 java node go C++
-	EnvName        string `xorm:"varchar(50)" json:"EnvName"`        //发布环境名字
-	EnvCode        string `xorm:"varchar(50)" json:"EnvCode"`        //发布环境编码
-	NameSpace      string `xorm:"varchar(50)" json:"NameSpace"`      //发布环境的命名空间
-	SshUrlToRepo   string `xorm:"varchar(200)" json:"SshUrlToRepo"`  //模块的url
-	Branch         string `xorm:"varchar(200)" json:"Branch"`        //模块的分支
-	GitlabId       string `xorm:"varchar(50)" json:"GitlabId"`       //模块的gitlab id
-	ModuleName     string `xorm:"varchar(50)" json:"ModuleName"`     //模块的名字
-	ModuleCode     string `xorm:"varchar(50)" json:"ModuleCode"`     //模块的编码
-	Department     string `xorm:"varchar(50)" json:"Department"`     //模块的名字
-	ShowUrl        string `xorm:"varchar(50)" json:"ShowUrl"`        //
-	YamlId         int64  `xorm:"index" json:"YamlId"`               // 发布模块Id 取名字取得不好
-	RegistryId     int64  `xorm:"index" json:"RegistryId"`           // 镜像仓库ID
-	EnvId          int64  `xorm:"index" json:"EnvId"`                // 环境Id
-	EnvCommCloud   bool   `xorm:"int" json:"EnvCommCloud"`           //是否共有云
+	Pipename       string `xorm:"varchar(50)" json:"PipeName"`                  //发布流程
+	PipeCode       string `xorm:"varchar(50)" json:"PipeCode"`                  //模块code
+	TechnologyType string `xorm:"varchar(50)" json:"TechnologyType"`            //发布类型 技术类型 java node go C++
+	EnvName        string `xorm:"varchar(50)" json:"EnvName"`                   //发布环境名字
+	EnvCode        string `xorm:"varchar(50)" json:"EnvCode"`                   //发布环境编码
+	NameSpace      string `xorm:"varchar(50)" json:"NameSpace" remarks:"命名空间"`  //发布环境的命名空间
+	SshUrlToRepo   string `xorm:"varchar(200)" json:"SshUrlToRepo"`             //模块的url
+	Branch         string `xorm:"varchar(200)" json:"Branch"`                   //模块的分支
+	GitlabId       string `xorm:"varchar(50)" json:"GitlabId"`                  //模块的gitlab id
+	ModuleName     string `xorm:"varchar(50)" json:"ModuleName" `               //模块的名字
+	ModuleCode     string `xorm:"varchar(50)" json:"ModuleCode" remarks:"模块编码"` //模块的编码 remarks 用属性字段对应关系
+	Department     string `xorm:"varchar(50)" json:"Department" `               //模块的名字
+	ShowUrl        string `xorm:"varchar(50)" json:"ShowUrl"`                   //
+	YamlId         int64  `xorm:"index" json:"YamlId"`                          // 发布模块Id 取名字取得不好
+	RegistryId     int64  `xorm:"index" json:"RegistryId"`                      // 镜像仓库ID
+	EnvId          int64  `xorm:"index" json:"EnvId"`                           // 环境Id
+	EnvCommCloud   bool   `xorm:"int" json:"EnvCommCloud"`                      //是否共有云
 }
 
 type PipeLineSimple struct {
@@ -41,7 +42,7 @@ type PipeLineHistory struct {
 
 type ModuleInfo struct {
 	Id             int64  `xorm:"pk autoincr" json:"Id"`             //自增iD
-	ModuleCode     string `xorm:"varchar(50)" json:"ModuleCode"`     //模块的英文 唯一编码
+	ModuleCode     string `xorm:"varchar(50)" json:"ModuleCode" `    //模块的英文 唯一编码
 	ModuleName     string `xorm:"varchar(50)" json:"ModuleName"`     //模块的名称
 	GitlabUrl      string `xorm:"varchar(200)" json:"GitlabUrl"`     //模块的gitlab url
 	GitlabId       string `xorm:"varchar(200)" json:"GitlabId"`      //模块的gitlab id

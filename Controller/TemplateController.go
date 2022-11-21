@@ -4,6 +4,8 @@ import (
 	"dev-producer/model"
 	"dev-producer/service"
 	"dev-producer/tool"
+	"fmt"
+	"reflect"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -24,6 +26,8 @@ func (vm *TemplateInfoControl) Router(engine *gin.Engine) {
 	engine.GET("/api/gettclist", vm.getTclist)
 	// 获取ModuleInfo
 	engine.GET("/api/gettc/:Id", vm.gettem)
+	// 获取deployobject
+	engine.GET("/api/getdeployobject", vm.gettemoject)
 }
 
 func (vm *TemplateInfoControl) addTc(context *gin.Context) {
@@ -134,4 +138,29 @@ func (vm *TemplateInfoControl) gettem(context *gin.Context) {
 		return
 	}
 	tool.Success(context, TemplateInfo)
+}
+
+///获取部署信息
+func (vm *TemplateInfoControl) gettemoject(context *gin.Context) {
+	//暂时
+	var pipeLine model.PipeLine
+	pipeLineType := reflect.TypeOf(pipeLine)
+	type PliTypeList struct {
+		Key   string
+		Value string
+	}
+	var pliTypeList []PliTypeList
+	for i := 0; i < pipeLineType.NumField(); i++ {
+		fieldTag := pipeLineType.Field(i).Tag.Get("remarks")
+		if fieldTag != "" {
+			fieldType := pipeLineType.Field(i)
+			var item PliTypeList
+			item.Key = fieldType.Name
+			item.Value = fieldTag
+			pliTypeList = append(pliTypeList, item)
+			fmt.Println("FiledName =", fieldType.Name)
+		}
+	}
+
+	tool.Success(context, pliTypeList)
 }
