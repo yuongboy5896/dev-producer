@@ -1,7 +1,7 @@
 package model
 
 type DaoPage struct {
-	Query    string
-	Pagenum  int
-	Pagesize int
+	Query    string `json:"query"`
+	Pagenum  int    `json:"pagenum"`
+	Pagesize int    `json:"pagesized"`
 }

@@ -21,6 +21,8 @@ func (moduleInfo *ModuleInfoController) Router(engine *gin.Engine) {
 	engine.POST("/api/addmi", moduleInfo.addmi)
 	//获取moduleInfo
 	engine.GET("/api/getmilist", moduleInfo.getmilist)
+	//获取moduleInfo
+	engine.POST("/api/getmilist", moduleInfo.getmilistbypakage)
 	//删除moduleInfo
 	engine.DELETE("/api/deletemi/:Id", moduleInfo.deletemi)
 	// 更新moduleInfo
@@ -119,6 +121,24 @@ func (mi *ModuleInfoController) getmilist(context *gin.Context) {
 	daoPage, err := tool.PaseUrl(context)
 	if err != nil {
 		tool.Failed(context, "取服务器列表数据获取失败")
+		return
+	}
+	//调用service功能获取服务器列表
+	moduleInfoService := &service.ModuleInfoService{}
+	moduleInfos, err := moduleInfoService.ModuleInfos(&daoPage)
+	if err != nil {
+		tool.Failed(context, "取服务器列表数据获取失败")
+		return
+	}
+	tool.Success(context, moduleInfos)
+}
+
+func (mi *ModuleInfoController) getmilistbypakage(context *gin.Context) {
+	// 解析分页
+	var daoPage model.DaoPage
+	err := tool.Decode(context.Request.Body, &daoPage)
+	if err != nil {
+		tool.Failed(context, "参数解析失败")
 		return
 	}
 	//调用service功能获取服务器列表
