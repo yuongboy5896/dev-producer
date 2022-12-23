@@ -11,6 +11,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"reflect"
 	"strings"
 )
 
@@ -132,7 +133,24 @@ func (kas *K8sApiService) CreateFromYaml(pipeline model.PipeLine) (string, error
 	pipeLineInfo, err := pipeLineD.QueryByPipeLineInfo(pipeline)
 	if err != nil {
 		fmt.Println(err)
-		return "", nil
+		return "", err
+	}
+	replaceRelation := pipeLineInfo.ReplaceText
+	pipeLineInfoType := reflect.TypeOf(pipeLineInfo.PipeLine)
+	pipeLineInfoValue := reflect.ValueOf(pipeLineInfo.PipeLine)
+	for _, replace := range replaceRelation {
+		fmt.Printf(replace.Template)
+		for i := 0; i < pipeLineInfoType.NumField(); i++ {
+			fieldTag := pipeLineInfoType.Field(i).Tag.Get("remarks")
+			if fieldTag == replace.RelationName {
+				fieldType := pipeLineInfoType.Field(i)
+				fmt.Println("FiledName =", fieldType.Name)
+				fmt.Println("value =", pipeLineInfoValue.Field(i).Interface())
+				str := fmt.Sprintf("%v", pipeLineInfoValue.Field(i).Interface())
+				pipeLineInfo.TemplateText = strings.Replace(pipeLineInfo.TemplateText, replace.Template, str, -1)
+			}
+		}
+
 	}
 	///创建
 	//通过http 请求
@@ -169,7 +187,7 @@ func (kas *K8sApiService) GetDeployInfo(DeployParam param.K8sGetDeployParam) (bo
 
 	//通过http 请求
 	//https://192.168.2.114:6443/apis/apps/v1/namespaces/dev/
-	body, err := GetHttpsSkip("https://"+result.EnvIP+":"+result.EnvConnPort+"/api/v1/namespaces/"+DeployParam.NameSpace+"/deployments/"+DeployParam.ModuleCode+"status", "Bearer "+result.EnvKey)
+	body, err := GetHttpsSkip("https://"+result.EnvIP+":"+result.EnvConnPort+"/apis/apps/v1/namespaces/"+DeployParam.NameSpace+"/deployments/"+DeployParam.ModuleCode+"/status", "Bearer "+result.EnvKey)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -180,7 +198,7 @@ func (kas *K8sApiService) GetDeployInfo(DeployParam param.K8sGetDeployParam) (bo
 		fmt.Println(err)
 		return false, err
 	}
-	if nameSpaceGetDeploy.Status == "Failure" {
+	if nameSpaceGetDeploy.Metadata.Name != DeployParam.ModuleCode {
 		return false, err
 	}
 	return true, nil
