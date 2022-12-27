@@ -71,7 +71,7 @@ func (mid *TemplateInfoDao) DeleteTemplateInfo(mi model.TemplateInfo) int64 {
 //更新发布模版
 func (mid *TemplateInfoDao) UpdateTemplateInfo(mi model.TemplateInfo) int64 {
 
-	if result, err := mid.Where("  Id  = ? ", mi.Id).Update(mi); err != nil {
+	if result, err := mid.Where("  Id  = ? ", mi.Id).Cols("TemplateName", "TemplateCode", "TemplateType", "TemplateText", "ReplaceText", "TemplateJekins").Update(mi); err != nil {
 		fmt.Println(err.Error(), result)
 		return 0
 	}
