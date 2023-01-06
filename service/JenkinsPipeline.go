@@ -96,3 +96,34 @@ func (Js *JenkinsService) CreateJobFromTmp(NewJob string, JobType string, pipeli
 	return true
 
 }
+
+/**
+*根据jenkins 获取job个数
+ */
+
+func (Js *JenkinsService) GetJobFromJenkins() []model.Job {
+	var devopsjobs []model.Job
+	ctx := context.Background()
+	// 连接方式未封装 写到配置未做
+	config := tool.GetConfig().JenkinsConfig
+	url := "http://" + config.Addr + ":" + config.Port + "/"
+
+	jenkins := gojenkins.CreateJenkins(nil, url, config.User, config.Password)
+	_, err := jenkins.Init(ctx)
+	if err != nil {
+		log.Printf("连接Jenkins失败, %v\n", err)
+
+		return nil
+	}
+	jobs, jenkinserr := jenkins.GetAllJobNames(ctx)
+	if jenkinserr != nil {
+		log.Printf("获取jenkins AllJobs失败, %v\n", err)
+
+		return nil
+	}
+	for _, job := range jobs {
+		fmt.Println(job)
+		
+	}
+	return devopsjobs
+}

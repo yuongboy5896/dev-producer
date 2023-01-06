@@ -90,3 +90,15 @@ type PipeLineInfo struct {
 	DeployEnv    `xorm:"extends"`
 	TemplateInfo `xorm:"extends"`
 }
+
+//当前jenkins 项目数
+type JenkinsJob struct {
+	Jobs []Job `json:"jobs"`
+}
+
+//当前jenkins 项目数
+type Job struct {
+	Name  string `xorm:"pk" json:"name"`
+	Class string `xorm:"varchar(50) " json:"_class"`
+	Url   string `xorm:"varchar(200) " json:"url"`
+}
