@@ -162,3 +162,14 @@ func (Js *JenkinsService) GetJobFromDb(daoPage *model.DaoPage) []model.JenkinsJo
 	}
 	return result
 }
+
+func (Js *JenkinsService) GetJobTotalFromDb() model.JenkinsTotal {
+
+	jenkinsD := dao.NewJenkinsDao()
+
+	result, err := jenkinsD.TotalJenkinsJobs()
+	if err != nil {
+		log.Printf("获取jenkins from db , jobs, %v\n", err)
+	}
+	return result
+}

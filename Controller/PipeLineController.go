@@ -35,6 +35,8 @@ func (pipeline *PipeLineController) Router(engine *gin.Engine) {
 
 	// Jenkins的jobs 数
 	engine.GET("/api/getjenkinsjobFromDB", pipeline.jenkinsJobsFromDB)
+	// Jenkins的 total总数
+	engine.GET("/api/getjenkinstotalFromDB", pipeline.getjenkinsTotalFromDB)
 }
 
 func (pipeline *PipeLineController) addpl(context *gin.Context) {
@@ -202,7 +204,13 @@ func (pipeline *PipeLineController) jenkinsJobsFromDB(context *gin.Context) {
 	}
 	jenkinsService := &service.JenkinsService{}
 	jobs := jenkinsService.GetJobFromDb(&daoPage)
-	fmt.Print(jobs)
-
 	tool.Success(context, jobs)
+}
+
+//
+func (pipeline *PipeLineController) getjenkinsTotalFromDB(context *gin.Context) {
+	jenkinsService := &service.JenkinsService{}
+	total := jenkinsService.GetJobTotalFromDb()
+	tool.Success(context, total)
+
 }

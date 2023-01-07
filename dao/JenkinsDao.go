@@ -39,3 +39,21 @@ func (jd *JenkinsDao) QueryJenkinsJobs(daoPage *model.DaoPage) ([]model.JenkinsJ
 	}
 	return jenkinsJobs, nil
 }
+
+//从数据库中查询所有jenkins job 列表
+func (jd *JenkinsDao) TotalJenkinsJobs() (model.JenkinsTotal, error) {
+
+	JenkinsJob := new(model.JenkinsJob)
+	var JenkinsTotal model.JenkinsTotal
+	total, err := jd.Engine.Where("1=1").Count(JenkinsJob)
+	if err != nil {
+		return JenkinsTotal, err
+	}
+	SunNum, err := jd.Engine.Where("1=1").SumInt(JenkinsJob, "buildnum")
+	if err != nil {
+		return JenkinsTotal, err
+	}
+	JenkinsTotal.SunNum = SunNum
+	JenkinsTotal.Total = total
+	return JenkinsTotal, nil
+}

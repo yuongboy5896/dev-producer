@@ -99,3 +99,9 @@ type JenkinsJob struct {
 	Color    string `xorm:"varchar(20)" json:"color"`
 	BuildNum int64  `xorm:"bigint" json:"buildnum"`
 }
+
+//当前jenkins 项目发布测试统计报
+type JenkinsTotal struct {
+	SunNum int64 `json:"sunNum"`
+	Total  int64 `json:"total"`
+}
