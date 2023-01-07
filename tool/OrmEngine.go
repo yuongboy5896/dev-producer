@@ -31,7 +31,8 @@ func OrmEngine(cfg *Config) (*Orm, error) {
 		new(model.PipeLineHistory), new(model.PipeLineSimple),
 		new(model.DeployEnv), new(model.DeployEnv),
 		new(model.VcenterVm), new(model.ModuleForImageUrl),
-		new(model.IpAlive), new(model.TemplateInfo))
+		new(model.IpAlive), new(model.TemplateInfo),
+		new(model.JenkinsJob))
 
 	if err != nil {
 		return nil, err

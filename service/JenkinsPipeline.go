@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"dev-producer/dao"
 	"dev-producer/model"
 	"dev-producer/tool"
 	"fmt"
@@ -101,8 +102,8 @@ func (Js *JenkinsService) CreateJobFromTmp(NewJob string, JobType string, pipeli
 *根据jenkins 获取job个数
  */
 
-func (Js *JenkinsService) GetJobFromJenkins() []model.Job {
-	var devopsjobs []model.Job
+func (Js *JenkinsService) GetJobFromJenkins() int64 {
+	var devopsjobs []model.JenkinsJob
 	ctx := context.Background()
 	// 连接方式未封装 写到配置未做
 	config := tool.GetConfig().JenkinsConfig
@@ -113,17 +114,51 @@ func (Js *JenkinsService) GetJobFromJenkins() []model.Job {
 	if err != nil {
 		log.Printf("连接Jenkins失败, %v\n", err)
 
-		return nil
+		return -1
 	}
 	jobs, jenkinserr := jenkins.GetAllJobNames(ctx)
 	if jenkinserr != nil {
 		log.Printf("获取jenkins AllJobs失败, %v\n", err)
 
-		return nil
+		return -1
 	}
 	for _, job := range jobs {
 		fmt.Println(job)
-		
+		var devopsjob model.JenkinsJob
+		getjob, err := jenkins.GetJob(ctx, job.Name)
+		if err != nil {
+			log.Printf("获取jenkins getJob失败, %v\n", err)
+		}
+		lastbuild, err := getjob.GetLastBuild(ctx)
+		if err != nil {
+			log.Printf("获取jenkins Build err, %v\n", err)
+			continue
+		}
+		devopsjob.Name = getjob.GetName()
+		devopsjob.Class = getjob.Raw.Class
+		devopsjob.Url = getjob.Raw.URL
+		devopsjob.Color = getjob.Raw.Color
+		num := lastbuild.GetBuildNumber()
+		devopsjob.BuildNum = num
+		devopsjobs = append(devopsjobs, devopsjob)
+		fmt.Println(num)
 	}
-	return devopsjobs
+
+	jenkinsD := dao.NewJenkinsDao()
+
+	result := jenkinsD.InsertJenkinsJobs(devopsjobs)
+
+	return result
+
+}
+
+func (Js *JenkinsService) GetJobFromDb(daoPage *model.DaoPage) []model.JenkinsJob {
+
+	jenkinsD := dao.NewJenkinsDao()
+
+	result, err := jenkinsD.QueryJenkinsJobs(daoPage)
+	if err != nil {
+		log.Printf("获取jenkins from db , jobs, %v\n", err)
+	}
+	return result
 }

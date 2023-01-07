@@ -91,14 +91,11 @@ type PipeLineInfo struct {
 	TemplateInfo `xorm:"extends"`
 }
 
-//当前jenkins 项目数
+//当前jenkins 项目发布测试统计报
 type JenkinsJob struct {
-	Jobs []Job `json:"jobs"`
-}
-
-//当前jenkins 项目数
-type Job struct {
-	Name  string `xorm:"pk" json:"name"`
-	Class string `xorm:"varchar(50) " json:"_class"`
-	Url   string `xorm:"varchar(200) " json:"url"`
+	Class    string `xorm:"varchar(50) " json:"_class"`
+	Name     string `xorm:"pk varchar(50)" json:"name"`
+	Url      string `xorm:"varchar(200) " json:"url"`
+	Color    string `xorm:"varchar(20)" json:"color"`
+	BuildNum int64  `xorm:"bigint" json:"buildnum"`
 }

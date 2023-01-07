@@ -31,7 +31,10 @@ func (pipeline *PipeLineController) Router(engine *gin.Engine) {
 	// 发布pipeline
 	engine.GET("/api/getjenkinsurl", pipeline.jenkinsUrl)
 	// Jenkins的jobs 数
-	engine.GET("/api/getjenkinsurl", pipeline.jenkinsUrl)
+	engine.GET("/api/getjenkinsjob", pipeline.jenkinsJobs)
+
+	// Jenkins的jobs 数
+	engine.GET("/api/getjenkinsjobFromDB", pipeline.jenkinsJobsFromDB)
 }
 
 func (pipeline *PipeLineController) addpl(context *gin.Context) {
@@ -181,8 +184,25 @@ func (pipeline *PipeLineController) jenkinsUrl(context *gin.Context) {
 }
 
 //
-func (pipeline *PipeLineController) jenkinsJob(context *gin.Context) {
+func (pipeline *PipeLineController) jenkinsJobs(context *gin.Context) {
 	jenkinsService := &service.JenkinsService{}
 	jobs := jenkinsService.GetJobFromJenkins()
 	fmt.Print(jobs)
+
+	tool.Success(context, jobs)
+}
+
+//
+func (pipeline *PipeLineController) jenkinsJobsFromDB(context *gin.Context) {
+	// 解析分页
+	daoPage, err := tool.PaseUrl(context)
+	if err != nil {
+		tool.Failed(context, "取服务器列表数据获取失败")
+		return
+	}
+	jenkinsService := &service.JenkinsService{}
+	jobs := jenkinsService.GetJobFromDb(&daoPage)
+	fmt.Print(jobs)
+
+	tool.Success(context, jobs)
 }
