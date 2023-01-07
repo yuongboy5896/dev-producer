@@ -4,6 +4,7 @@ import (
 	"dev-producer/model"
 	"dev-producer/service"
 	"dev-producer/tool"
+	"fmt"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -28,6 +29,8 @@ func (pipeline *PipeLineController) Router(engine *gin.Engine) {
 	// 发布pipeline
 	engine.PUT("/api/publishplbyid/:Id", pipeline.publishplByid)
 	// 发布pipeline
+	engine.GET("/api/getjenkinsurl", pipeline.jenkinsUrl)
+	// Jenkins的jobs 数
 	engine.GET("/api/getjenkinsurl", pipeline.jenkinsUrl)
 }
 
@@ -169,12 +172,17 @@ func (pipeline *PipeLineController) publishplByid(context *gin.Context) {
 }
 
 //
-func (pipeline *PipeLineController) jenkinsUrl (context *gin.Context) {
+func (pipeline *PipeLineController) jenkinsUrl(context *gin.Context) {
 
-
-	
 	config := tool.GetConfig().JenkinsConfig
 	url := "http://" + config.Addr + ":" + config.Port + "/job/"
 
 	tool.Success(context, url)
+}
+
+//
+func (pipeline *PipeLineController) jenkinsJob(context *gin.Context) {
+	jenkinsService := &service.JenkinsService{}
+	jobs := jenkinsService.GetJobFromJenkins()
+	fmt.Print(jobs)
 }
